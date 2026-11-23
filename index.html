@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phone POC Board Console</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='6' width='26' height='20' rx='4' fill='%231c2330' stroke='%233fb9a0' stroke-width='2'/%3E%3Ccircle cx='10' cy='16' r='4' fill='%2300ff80'/%3E%3Cpath d='M17 12h8M17 16h8M17 20h5' stroke='%2358a6ff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0d1117">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!-- Home Screen icon (tools/make-icons.py, 180x180), inline: the board page is this file written from
+     IndexedDB, so the icon comes from the iPhone, not from the board flash. -->
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAVcUlEQVR42u2dabBlVXXH19p7n+HO943dr4fXw4NuGuiWGUzEIKICJijllCAaDWIVKUtEjZWKqVimkg+JlkRjgiIGDRrjFBQVgqGg23LohqaRbqEneqbHN953pzPsvVc+3NfQw+3H6+47PVn/Ot9e1Tv37P07a6+19trrYKZrDrBY9SR4CFgMB4vhYDEcLIaDxXCwGA4Ww8FiOFgMB4vhYLEYDhbDwWI4WAwHi+FgMRwshoPFcLAYDhbDwWIxHCyGg8VwsBgOFsPBYjhYDAeL4WAxHCyGg8ViOFgMB4vhYDEcLIaDxXCwGA7WLJNq8/0RERGQJ+IkERAREL3q4ECBgEjG2jAiY8AQtXUUOk4IKAQqKRyFUgIAWfv7DwcKQUSmElqtVSqZHFrgZNOJwQGVSZK1wDYECBBJm8qu/dHweHh4TBeKgCgTHipJxv5+woECiUAXy8J1MivPyV9xYe7S8/15fcL3UAoUAoCNxzFrijGmEsTjk5ObXphYt6nw2y1xoaTSSRSiZVYEW9PeGqU0lQAQ+t782r43XZU6b4n0XBvFNorJEgAxGKdYWZTwHCCq7Nh36EerR9esN9VQpROtMSHNhwMBUcSFUnrF0sHbb85fssIaY6shWap5HozBtCZkyhuTviccVX5h396vPzi+dpPKJGt/berNpZdINzUYAUBTrs5569Xn/s1fJAYHdLFM2qJAJmPm0RwikjYmiNzefN8br1Dp5MS6TSBQSNlUPpoJByIQmWq45KO3DN72dquNDSKUEpmJM6NEoI01aZO7ZEVq+aKJJ58z1UA4qnl8NBcOG8ZLPvpnc2++Np4oIQAKzrmdLSGAaCpB6txFmQuWjv/ytzaMUYpZBgdKoQvlBe//kwXvvTEeLaCSvIg0MB1gytXE4nlub/fYmvXoqia5802BA6XQpWrXlSuX3HmLKVamQ5sAyBIRg3OCGwq1MTnFG4VSmHKQuWApaTOx7ncy6TVjcWlCngPRRtrpyi658xaYNuIia1FJ4SUAEbThBNhRMkAoCQAURjbSKETdkUEp9GR53p++pfD05uKWXSrpNzz/oZrABpowGvzQzf5Ab1wo1bK/dQYAUKYSplAuPrujunlPuH8UBXK2AxDAkjuvxxvsT60acuZ0mXIAxoLAkweajJUJb8EHbtr66X+lzrccNTKSS+b1Xf+HulStv6BYQiXRkeOPrBv72To9ViBtm+dVzUaVnn0BCJy+fO6ai7quv1ymfFMNT3bna8t3/rIVPddcfuTRXzu5VGOTY422HAJtGHdffalK+XGhXGfKLaGrbCU4ePdDpQ3bhe+IhIeAnCI93nwgIJhSZeR7TxR/89zAX97kD8235QBOHk8EMrbn2stHHn+SbIPHsNEOKZFwnUW3v0NlkmTNiSkNApSCYr3/898rb9ypcilAAbWNaQK+jrkIiFAImfT0eLH01JbUyqVOb5Zic4KLWsuPeXN6JtZtikYnhHIauEXVSGOOQpggSi1b5A/OtWGMKOqgk/BGvr+m8vxulU+TscA79dMHLdrIlGcmq4f+4xHSBuq5ZWSsSvm5yy6wUdzY4i3RWGtIWucuWi59t46JsyQSbvnZF8Yfe1pmU6QNz/6MCNFWpv3q1r1jP1snkx6RrbuyZC9aLhynsW6paCzoQsrk0EKqF5cSEEox+avnSGsUHLae1sBa4TrFtc+bcniyG4eINo4TC+aoXJq0aWCyUTT2IdB1VCZZx2wQCCV1oVLZtk+4TlvqmmaxLKDjRAdHw32HhetAXavsuyqdINOZlgORtFW5tDe3l7Q+yRUldFS0f1iPFFBJDk1Oe3Ql2kgH2/ejlCeuHdOPfKdYDphys09Fjw0j0pY3Wc58damEp8wjN6EaubWpJy40P+s0UkvvxgPOOpUUD8GpjFzbipII6sSrDEfHYCFMHJCO2nN/oYTjtbLKnOGY6cyQiXVUTfYvTfYtohafpCFCgVFxpHx4p6kWlZ9prwlhOI6PCU0sHP+cm/567mVvU4lUW36FiUxleMfOn35hdMsTyk+30X4wHC+RAUAWEFfddl/PilVRCXRo24SoTM9bdtEdX9l0/ycPb/iRk8yTNQzHK01eLRLG43y3o3uYDZiSqDK29PpPdK9YFUzEQqk6G4ctMx6BIVec+/ZPT+xcpysTKJ32BM6zgAmJIBA0YUmLiUiMhGI4FMOhGAnFRIQlDZpAIMizSqKQ0U6ya84lbzMBoZDtPbWLUtrYJnq6ei98kwkr7cJUdTgWGFgsR+QI2+/Hi9J6fjJengMkAABCZ2tB7a+oPSVxJMDYUsohX4A5fUOCSDZ2E11OuptMhxysIQBKdC2gKa+YGI6jkoihxfFIL04H71xUvX5+eHGX7fEA1EnrihajoffMeOJ/9/urD6ndJUo75Ak4zS0oRGniwIQVlUhAp2wLYlyZaKMN6zw4BAKAGI/0gmTpzhWl9w3Z3hSAnbpsdNzMCQCBtsevXje/et1CMVJOP7Aj/cAO9WLF5l0AgBlWzhGhdKLJI+Pbfrng6reHYSyU01arQYAYV/XoltXS9YFMWzakOgwOhRhYCM3kHcsnP7rC9qQAYjDhFDQIILCOm0QWrAEA2+tO3rWq9P6h7Jc2Z+7dBp4kX4CmmU2HlW5i18+/2HPBNX4+H5dfKklpsT2vnVYRfl5uf/ArpRefc1JdZE1bNqVUR5EhCrHp8cb//arKjYumsKh5mjNxWmsvnA1tjzvx2cuiK/u6PrVejoY258yIDyKhvKhwaOPXPrT8XZ/JLVlZ+88tzYEdDah1EG9/8L49j/2bSmTbFcd2EhwKRSEOV+XH/uXKeEUP6ACkeGUs6lJCBCao3LgoXpLu/tg6b+PEDPkgstJLFV/83TNffn/PBdekB5aThZbacyIUEBYOTuzcUDqwWfmZdrminQSHQizE4cr88A+utRkXdADqLII3BFACdBCv6Br+wbV973jc3TRBM+TDGuWliMzhDT89ZH+MrW0rg4AEgCiE4x7Nfb36GsadkGrBwNpud+zLV9mMCzo6KzJefjIBOrIZd+zLV/Xf/LgoG3JxJmEIkQUQTjLXvjCBiKiNq0lHWQ6EQI999cp4WffZ2ox6fMTLuse+cFnvn/8a3Jmf6eiIuemA17btrsZ4VLxjWfUtixtMxst8BNW3LC7esUyMR6C4EG22wIEAgdULk5N3nQ82hiYdl5UCbDx51/l6YRICy3WKswQOiaIYlz44ZLNJsE2bNgSw1maTpQ8OiWJ82hEQw9E2s7E4Xbp1CKjJcyYRKC7dOqQXp0/DeGA7Wtp1Umm+aKfZKOngugHblWqi2TjWeHSlgusGREm/IogoZK3wh4yGWufDllwARDoGoNoPeBVHKxbIxcoNA9CySjiylRsGUg/smD6gRRRxpSAd38l0k7FxaYRaUy1IVvoZN5vVlXJUGlN+WkjnVVkmiACxNf1+dHE3oGnFcQyBgCa6uNv0+6IQgzpVFyHUYXHgspvnv/69ie7FVtvK8M6pXhJNTUchktVupt/v6g0Lw2Nbf7F39f1xcVh6yVdfmSAihsYsSlOqVVuOCECWUr5ZlJZPjVK99p2IqIPSsnf8w+Ab3m01WA2A4Hdf2rJRIQukITU3m1081HvhGzd+7cPV0b3SSbTLfrTNcqC2emGKlARjQLZqIVNSL0x5vxk+uXshChlXCwOXv3PwDe+OShpA1HqU6ZiO7og1nY1am1GKQQc6NXfwvPd87rdfeW8bV5b2LSuG4vOyAC1sEkcAgPF5WTBUZ66JEOXAFe+xZmp/YwriNgQsIJQTl01+aGVuyaXj23+t/HRbZqmteQ5DnXJTRGsiL9OX6FtsY2xjafGxtApJ+aVXWh21a5r4rCyrM+FoS7Ky7k2JhHTD4nB1eLdwqDOOqqI1OLFznVAutKmotU1wEIBEZ8skALVuswMBgJwtkyDrOTqIRObgk98VEgGIrK2daG71VTtGrWMnJSd2bCrselq6bYtmVbvgICXUvjJqQ7J1LwJqo/aVSYk6PfmscfzMoad+mB28+OVQti0WQ4CTcUr792757l+R1W1MhbULDiJPyD0lLAeU84Cabz8IAAWWA7mnRJ6o2wSHiKSX3vY/fzu5e/3819/qdy0CwtaXCUalkbEta17FSTACcIQ8ErjPjAV/tABs8zdLLYFQ7jNj8khAaefURxZIeZmD6x888uwjTrq7DW1SBZigHJXGlZ9u44LSVjhqRj6i5CMHg2sGW2avk48cxIhITOfhEVknmSNr4/JYy+t7EYAQpZvuJrJt94vbB4chm1b+YwfFeNnm3eauLAQghBgv+48dtGn1ivmVWo1gu44vA0GHFCm2L5QlAF+o3aX0t3YAOs1NiBkCdNLf2qF2l8AXMy8kbc/VMY0425whtRknff8OMVkBIZo1JjWzMVlJ37/DZpz2pGU5CXaGxmNfJXv38yAcaNKHdI0F4WTvfl7tq5yG2WC1P32uyXa5mXu2JR7dDcoH3Wg+tAXlJx7dnblnm+1yZ3hultVuh/RYA+LL7o+vP/JgNl6Wb9ihpikyXGfbWPfH14MvT2ctr+3KYiOfEWjqw+wMx+lkIIB8Icai7o+sHf7htQ079KYtKFcUo+6PrBVj0QyPQ9a4IDJxpUjWNOo4JAKiVNJLIsoO6TE6WywHgCbKOd6mib53Pn7cQWo807fUWFC+s3m0+2PrvE0zPUgNACikDkrSScy55I8bc5CaCBDImuK+jRM71+uwpPzMbDlO1zGn7DXZnONtnOh/1+rxf77saAsGO9WWY+ZYWAIpQPnJh/ecXgsGAERhwnJmwYUNb8FQi08Luzdt/f5nS/ufk25yVtiPTurPocnmHFHSPbf9yv3w8DHNWywATEcJHe3gIwVIV4yWs196tta8ZeZkAKLVoZubu+r2+/x8Pi41tnkLAkFu8cpVt9+3/u6b4+IwKrfzP2HWYZ19NJErwBXZe7Ymf7Kv9L6hk9o+0cltnwAFSAEgxEg5/cDm49o+zTg8QRQ6qi57852J7nw42ZS2T1EpTnTnl7z5zs3f+YTj+ESG4Thd/5QAwHa5cizK/+PG9Ld3BtfMfblhnHCOP8dQaxgXnNAwzna5p5fsQiQTu9n+rmWv0yEJ2ZRhEVLpkLqWvc7N9tuoAkJ2uPHo1G6ChshB6vXkSJj+5gup/9pp+309g1aTttcDQ2eQBiUy0vGllwTbzM02i9JLSsc3YRFBsuU4i9SAJnKQuj0gwELsPjXqrR1+uc0oAkgkKcgTlHYIASydYZqLCFHF1cm4NOYkE9ZQM4rOiUhIiEtjcXUSUXW+z9HxBcYEYAgsgUJKK5t3ba9n+zzb59lez+ZdSitQCJbOpDftsQuLVHFl/PCGH0sfm9JviYiskT4e3vDjuDKOchY0Fp89vc9rPc6b9+/JOIns3tX3di+/utYYv7HRphDCzzijmzfuXX2vk8h2vjcK/NWE4+BDAVZv/PqHlt7wscZ+UoMsxNXCgXUP73z4biDqfFeU4ajneUjHxsHWH3xm3y++2ZiP8RAgAllTPrwjnDggHB+lA7Mkg85wnPiOo1ROMheM768O72rksuJ4KpEhIuC9lVltP4iMUC46XoP/62z7DjfDMc1kvtqLP/isLKuVcNB0ryMQ12Kdhab/Qgh1OByIeKp2okTCd9FRzMeZRtooUv4pCZhm5DsCDoG2EkTjk3V+JSJp48zpkdkkGe4UeyYuECrhLeona+uk9msjP1ZoLB+igT8fpTClanh4FJU80ZtDIG1ULukvnkuR7qhum7NACKSN05Nz5/fVGT0iVFJPlqORCVSqgX50I0FDRGtMsPcQSlnH+hEAYv66S1vRO/D3jA0hbDXMXb3S6cnaWMOJbJBQMjg8aooVVAI6Ew4gQClK2/dYbeqbvmqYWrU09ZohUwpQcaA048U61O7c7twbL7FBNNWs7IRhV7Kyfa+J4sZuJjdyhohI+F5x0/bo0Ci69RxPArK2/9brVD5lKhFK5uOVbIYUpC3F8ZzbblRdGYrNye4aItooHl+7EZVsbMDSWMtBwpHx6GRhw2bpu3Ry3CWQQu3O613wyfeofEoXKyAQhXj5U9N8TV2IQoBAU6qiFAN33JR6zZCthCevyGSt8N3KrgPlbXul7zY2CSu9RCPbGCICEUVHxnrecAXW9S0QKdJOfz772vNNoRzsOkRhRESACJb4AktABLE2QQSWkiuXDtzxtvSly2w5qO+rWZJJ/8VvPFR8bodMeI1NE2Cma07DLWFcKA996gNz3vq6eKKIUtZ9JHQVSlHZsq/8zPbq1n3xSIHj25cWX6c3587ryVx1fmrVUrJkg/pLMFkrfbe699Bzd36u9snRxibCmrC3Ykl4zqHv/1/3H7xGOIqshXrOKcWaYkietzB14WJbjUypAkzH0UkX6aTwXbDWVsPa+3YqjITrHPjvR00lULUEUkPVeDiISPpueeeLL/7nT5bcdWs8WkAl669AALYaERAKITNJhuLlMTTWlCoIOE3YT9o43dnDD60ZefxJlWk8GdCkXVkyVuVShx9akzpnsP+tV8fjk/X5AABR80WBtGHLcUxsinVC1uPJUOlEcdP2PV/9ofC9Jm0gqyY+oKt23/M9f3Bu9sJz4oniKfk4xpCwphKi0w+tNiqdiIvlF/7pGzYIZcJrUqVIg6OV44yClBTr8V8+kzpvcXLxgAkiZAjO+pUja1QuHew/sv3v763uPiBTfvNqiJoIBxAJpWwYj/x8rcqmchctJ0NUS54yIWe0WKNAJ5eeWLtp69/dExwYVimfTBOry5oJxxQfAhDGfvVssPdQ5oKlTm+OtKk9ErIVmaGHbwkFOpmk1Wb/tx/e9cXvkLEy4TaVjKbkOer6E4ioS2WnOz//lht6r71C5dOkjQ0isrZFX7qZhStI7WsvwnOF5+hiZXTN04d+9ETlhb0ynaxB0/R5awUctTtJYaPYhrE/r6/76ovzV6xMnTsoUwkUgozhCqAT3yclyJINo+reQ5MbNo888VRp6x7hKpnwmm0w2gDHSybERrEJQuG5icG5mRVLnZ5cYuFclUmRMeyu1oIV0qa660BwcKS650Bl9wE9WRaeIxMe2ZbWWbYWjpcQEVh7LSjWZC0qVfugGmsqkiWwsUaBqKTwXJSixVg0Oc8xvYdlCACE52LCm4rQGI0TIgX0a0MFllq2jnQAHCdRwqqb0Wj7b+ByGxbDwWI4WAwHi+FgMRwshoPFcLAYDhbDwWI4WCyGg8VwsBgOFsPBYjhYDAeL4WAxHCyGg8VwsFgMB4vhYDEcLIaDxXCwGA4Ww8FiOFgMB4vhYLEYDhbDwWI4WAwHi+FgMRwshoM12/T//Gc17cjPjsUAAAAASUVORK5CYII=">
+<meta name="apple-mobile-web-app-title" content="Phone POC">
+<meta name="mio-ui-version" content="a4b5a4bc3c0f"><!-- CI: content hash, also in ui.json -->
+<!--
+  Board console for the Phone POC (STM32F446).
+  Every control is a SCPI line. Transport:
+    - served by the board (http://phone-poc.local/, not a secure context): WebSocket /ws
+    - secure context (localhost, https, file): Web Serial on the CDC-ACM port
+  Firmware update (flash layout A, App/image.h): on the board-served page through the network updater
+  (:SYSTem:UPDate, then POST /api/update); in a secure context through the ST ROM bootloader (WebUSB DFU).
+  The firmware build gzips this file into flash, in the app and in the network updater (tools/embed_web.py).
+-->
+<style>
+:root{
+  --bg:#0d1117;--panel:#161b22;--panel2:#1c2330;--line:#2a3340;--text:#e6edf3;--muted:#8b98a9;
+  --accent:#3fb9a0;--accent2:#58a6ff;--ok:#3fb950;--warn:#d29922;--bad:#f85149;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:16px 20px 4px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+header h1{font-size:18px;margin:0;font-weight:600}
+header .sub{color:var(--muted);font-size:13px}
+.wrap{padding:8px 20px 20px;display:flex;flex-direction:column;gap:14px}
+main{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr));gap:16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel h2{margin:0;font-size:15px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font:600 11px var(--mono);padding:2px 7px;border-radius:999px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.badge{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.badge.on{color:var(--ok)} .badge.off{color:var(--muted)} .badge.err{color:var(--bad)} .badge.wait{color:var(--warn)}
+button{font:inherit;font-size:13px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--accent2)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.primary{background:#1f6f5f;border-color:#2b8f7b}
+button.danger{border-color:#6e2b2b;color:#ffb4ae}
+button.small{padding:4px 9px;font-size:12px}
+button.sel{border-color:var(--accent);color:var(--accent)}
+button.sw{display:inline-flex;align-items:center;gap:6px}
+button.sw i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1px solid #0006}
+select{font:inherit;font-size:13px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+input[type=text],input[type=url]{font:13px var(--mono);color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;flex:1;min-width:0}
+input[type=range]{flex:1;min-width:140px;accent-color:var(--accent)}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:var(--panel2);border-radius:10px;padding:12px 14px}
+.stats.identify{animation:idf 1.25s steps(10,end)}
+@keyframes idf{0%,20%,40%,60%,80%{box-shadow:0 0 0 3px #fff inset}10%,30%,50%,70%,90%,100%{box-shadow:none}}
+.counter{font:600 40px/1 var(--mono);letter-spacing:-1px;overflow-wrap:anywhere}
+.led{width:34px;height:34px;border-radius:50%;background:#20262f;border:2px solid #333c48;transition:all .12s}
+.led.unknown{background:repeating-linear-gradient(45deg,#20262f 0 4px,#2a313b 4px 8px)}
+.led.status{background:conic-gradient(#3fb950 0 33%,#3fb9e0 0 66%,#58a6ff 0);opacity:.55}
+.ledwrap{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.cell{background:var(--panel2);border-radius:10px;padding:8px 10px;min-width:0}
+.cell .v{font:600 15px var(--mono);margin-top:2px;overflow-wrap:anywhere}
+.hb{width:10px;height:10px;border-radius:50%;background:#333c48;display:inline-block}
+.hb.beat{animation:beat .4s ease-out}
+@keyframes beat{0%{background:var(--accent);box-shadow:0 0 0 0 rgba(63,185,160,.7)}100%{background:#333c48;box-shadow:0 0 0 8px rgba(63,185,160,0)}}
+.log{font:12px/1.5 var(--mono);background:#0a0e14;border:1px solid var(--line);border-radius:8px;height:160px;overflow:auto;padding:8px 10px;white-space:pre-wrap;word-break:break-all}
+#cLog{height:280px}
+.log .rx{color:#a5d6ff} .log .tx{color:#ffa657} .log .sys{color:var(--muted)} .log .err{color:var(--bad)} .log .okl{color:var(--ok)}
+.note{font-size:12px;color:var(--warn);background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.35);border-radius:8px;padding:8px 10px}
+.note code{font-family:var(--mono)}
+.version{font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:#13233a;color:#9ccbff;border:1px solid #2b4a75}
+.banner{border-radius:12px;padding:12px 16px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.banner.amber{background:rgba(210,153,34,.10);border:1px solid rgba(210,153,34,.6)}
+.banner .grow{flex:1;min-width:240px}
+.banner.blue{background:rgba(88,166,255,.08);border:1px solid rgba(88,166,255,.5)}
+.full{grid-column:1/-1}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{flex:1;min-width:110px}
+.tabs button.sel{background:#183a33}
+.drop{display:block;border:2px dashed var(--line);border-radius:10px;padding:18px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.over{border-color:var(--accent);color:var(--text);background:rgba(63,185,160,.06)}
+.bar{height:14px;background:#0a0e14;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.bar>div{height:100%;width:0;background:linear-gradient(90deg,#1f6feb,#58a6ff);transition:width .15s}
+.bar.okb>div{background:linear-gradient(90deg,#238636,#3fb950)} .bar.errb>div{background:var(--bad)}
+.ota-stats{display:flex;flex-wrap:wrap;gap:6px 18px;font:12px var(--mono);color:var(--muted)}
+.ota-stats b{color:var(--text)}
+ol.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+#oLatest a,.note a,.banner a{color:var(--accent2)}
+code{font-family:var(--mono);font-size:12px}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:max-content;pointer-events:none;max-width:min(480px,calc(100vw - 32px));background:#3a1618;color:#ffd7d4;border:1px solid var(--bad);border-radius:10px;padding:10px 14px;font-size:13px;z-index:10;box-shadow:0 6px 24px rgba(0,0,0,.4)}
+#hdrHelp{margin-left:auto}
+#help{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:0;width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 32px)}
+#help[open]{display:flex;flex-direction:column}
+#help::backdrop{background:rgba(0,0,0,.6)}
+#help .hd{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+#help .hd h2{margin:0;font-size:15px}
+#help .bd{padding:12px 16px 16px;overflow:auto;display:flex;flex-direction:column;gap:12px}
+#help .tabs button{min-width:80px}
+#help h3{margin:4px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+#help ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px}
+#help a{color:var(--accent2)}
+#help pre{margin:6px 0 0;background:#0a0e14;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:12px/1.5 var(--mono);white-space:pre-wrap;word-break:break-all}
+#help .ut{font:600 10px var(--mono);color:var(--warn);border:1px solid currentColor;border-radius:999px;padding:0 6px;margin-left:4px;white-space:nowrap}
+@media (max-width:480px){header,.wrap{padding-left:16px;padding-right:16px}.panel{padding:12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Phone POC · Board Console</h1>
+  <span class="sub">SCPI over USB Ethernet (WebSocket) or Web Serial</span>
+  <span id="hdrVersion" class="version hidden" title="*IDN? of the connected board"></span>
+  <span id="uiPill" class="version hidden"></span>
+  <button id="hdrConnect" class="primary small hidden">Connect</button>
+  <button id="hdrInstall" class="small hidden" title="Install this console as an app">Install app</button>
+  <button id="hdrHelp" class="small" title="Setup per operating system: drivers, permissions">? Help</button>
+</header>
+
+<dialog id="help" aria-labelledby="helpTitle">
+  <div class="hd"><h2 id="helpTitle">Setup help</h2><button class="small" id="helpClose">Close</button></div>
+  <div class="bd">
+    <div class="tabs" id="helpTabs">
+      <button data-os="win">Windows</button><button data-os="linux">Linux</button><button data-os="mac">macOS</button>
+      <button data-os="android">Android</button><button data-os="ios">iPhone / iPad</button>
+    </div>
+
+    <div data-ospane="win">
+      <h3 data-sec="connect">Connect</h3>
+      <ul>
+        <li>Use <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> or Edge. USB serial and USB Ethernet (<code>http://phone-poc.local/</code>) need no driver.</li>
+        <li>Board page doesn't load and Device Manager shows <b>code 10</b> on the board's network adapter: update the firmware over USB serial.</li>
+      </ul>
+      <h3 data-sec="update">Firmware update</h3>
+      <ul>
+        <li>The browser only lists <b>STM32 BOOTLOADER</b> when it has the WinUSB-based ST driver. Install
+          <a href="https://www.st.com/en/development-tools/stm32cubeprog.html" target="_blank" rel="noopener">STM32CubeProgrammer</a> 2.24 and let it install the DFU driver.</li>
+        <li>Already installed, or the board is still not listed: run as administrator
+          <pre>C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\Drivers\DFU_Driver\STM32Bootloader.bat</pre></li>
+        <li>Check: in Device Manager, <b>STM32 BOOTLOADER</b> sits under <i>Universal Serial Bus devices</i>. Older ST DFU drivers (STTub30) don't work with the browser.</li>
+      </ul>
+    </div>
+
+    <div data-ospane="linux" class="hidden">
+      <h3 data-sec="connect">Connect</h3>
+      <ul>
+        <li>Use <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> from Google's .rpm/.deb package, not the Flatpak: in the Flatpak sandbox Chrome lists no serial ports and does not resolve <code>phone-poc.local</code>.</li>
+        <li>Serial access denied? Add yourself to the <code>dialout</code> group, then log out and in. <span class="ut">untested</span> (Fedora needs nothing)
+          <pre>sudo usermod -aG dialout $USER</pre></li>
+      </ul>
+      <h3 data-sec="update">Firmware update</h3>
+      <ul>
+        <li>The ST bootloader belongs to root, so Chrome gets "Access denied". Allow the desktop user once, then replug the board:
+          <pre>echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="df11", TAG+="uaccess"' | sudo tee /etc/udev/rules.d/70-stm32-dfu.rules
+sudo udevadm control --reload && sudo udevadm trigger --subsystem-match=usb --attr-match=idVendor=0483</pre></li>
+      </ul>
+    </div>
+
+    <div data-ospane="mac" class="hidden">
+      <h3 data-sec="connect">Connect</h3>
+      <ul>
+        <li>Use <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> or Edge. Nothing to install. Safari has no Web Serial or WebUSB.</li>
+        <li>Board page doesn't load in Chrome or Brave: System Settings → Privacy &amp; Security → <b>Local Network</b>, turn on the browser and its <b>Helper (Aperitif)</b> entries.</li>
+      </ul>
+      <h3 data-sec="update">Firmware update</h3>
+      <ul><li>Nothing to install.</li></ul>
+    </div>
+
+    <div data-ospane="android" class="hidden">
+      <h3 data-sec="connect">Connect</h3>
+      <ul>
+        <li>Use Chrome and tap <b>Connect USB serial</b>.</li>
+        <li>The board is listed twice? Pick the entry with the serial number, or close Chrome completely and try again.</li>
+        <li>USB Ethernet (<code>http://phone-poc.local/</code>) does not load? Allow Chrome's <i>local network</i> permission: Settings → Apps → Chrome → Permissions.</li>
+      </ul>
+      <h3 data-sec="update">Firmware update</h3>
+      <ul><li>Works over USB serial (tested on a Pixel 2). Nothing to install.</li></ul>
+    </div>
+
+    <div data-ospane="ios" class="hidden">
+      <h3 data-sec="connect">Connect</h3>
+      <ul>
+        <li>iPhone and iPad browsers have no USB serial: use USB Ethernet. Plug the board into the USB-C port, wait about 5 s and open <code>http://phone-poc.local/</code> (<b>Open board page</b>).</li>
+        <li>Chrome and other browsers ask for <i>Local Network</i> access; allow it. Denied by mistake: Settings → Chrome → Local Network.</li>
+        <li>Offline use: on the board page tap Share → <b>Add to Home Screen</b>.</li>
+      </ul>
+      <h3 data-sec="update">Firmware update</h3>
+      <ul><li>Use the Firmware update section on the board page (through the network updater). Nothing to install.</li></ul>
+    </div>
+  </div>
+</dialog>
+
+<div class="wrap">
+  <div id="boardBanner" class="banner blue hidden" role="dialog" aria-label="Connect over USB Ethernet">
+    <div class="grow"><b>Connect over USB Ethernet.</b> <span id="boardWhy"></span> Plug the Phone POC into this device's USB port (USB-C on an iPhone), wait about 5 s, then open the board page. It opens in a new tab at <span class="mono">http://phone-poc.local/</span> and gets this console from this page; afterwards it also works offline.</div>
+    <div class="row"><button id="boardOpen" class="primary">Open board page</button><button id="boardClose" class="small">Close</button></div>
+  </div>
+  <div id="install" class="banner blue hidden" role="status">
+    <div class="grow"><b>Install app:</b> <span id="installSteps"></span></div>
+    <div class="row"><button id="installClose" class="small">Close</button></div>
+  </div>
+  <div id="uiUpdate" class="banner blue hidden" role="status">
+    <div class="grow">A newer console (<span id="uiNew" class="mono"></span>) is stored on this device.</div>
+    <div class="row"><button id="uiReload" class="primary">Reload</button></div>
+  </div>
+  <div id="updBanner" class="banner amber hidden" role="status">
+    <div class="grow"><b>Network updater running</b>: the app is not running (<span id="updReason"></span>). Flash firmware below<span id="updAppWrap">, or start the installed app <span id="updApp" class="mono"></span></span>.</div>
+    <div class="row"><button id="updStart" class="primary">Start app</button></div>
+  </div>
+  <main>
+    <!-- ============ live dashboard ============ -->
+    <section class="panel" id="dash">
+      <h2>Live dashboard <span class="tag" id="dTag">SCPI</span>
+        <span id="dBadge" class="badge off">No board</span> <span class="hb" id="dHb" title="poll heartbeat"></span>
+      </h2>
+      <div class="stats" id="dStats">
+        <div><div class="label">Board time · ms <span class="mono" style="text-transform:none">(:SYST:TIME:MS?)</span></div><div class="counter" id="dCounter">—</div></div>
+        <div class="ledwrap"><div class="led unknown" id="dLed"></div><div class="label" id="dLedLbl">RGB LED</div></div>
+      </div>
+      <div class="row">
+        <button data-led="on" disabled title=":LED:ON;:LED:R 0;:LED:G 1;:LED:B 0">LED ON</button>
+        <button data-led="off" disabled title=":LED:ON;:LED:R 0;:LED:G 0;:LED:B 0">LED OFF</button>
+        <button data-led="toggle" disabled title=":LED? then LED ON or LED OFF">Toggle LED</button>
+        <button id="dIdentify" disabled title=":LED:IDENTify: five white/cyan flashes">Identify (blink)</button>
+      </div>
+      <div class="row" id="colors">
+        <span class="label">Colour</span>
+        <button class="small sw" data-rgb="1,0,0" disabled><i style="background:#f33"></i>R</button>
+        <button class="small sw" data-rgb="0,1,0" disabled><i style="background:#3f3"></i>G</button>
+        <button class="small sw" data-rgb="0,0,1" disabled><i style="background:#36f"></i>B</button>
+        <button class="small sw" data-rgb="1,1,0" disabled><i style="background:#ff3"></i>Y</button>
+        <button class="small sw" data-rgb="0,1,1" disabled><i style="background:#3ff"></i>C</button>
+        <button class="small sw" data-rgb="1,0,1" disabled><i style="background:#f3f"></i>M</button>
+        <button class="small sw" data-rgb="1,1,1" disabled><i style="background:#fff"></i>W</button>
+        <button class="small" data-led="status" disabled title=":LED:OFF: the firmware's status colours">Status</button>
+      </div>
+      <div>
+        <div class="row" style="justify-content:space-between"><span class="label">Poll interval <span style="text-transform:none">(:LED? + :SYST:TIME:MS?)</span></span><span class="mono"><b id="dIntVal">—</b> <span class="muted" id="dIntHz"></span></span></div>
+        <div class="row" style="margin-top:6px">
+          <input type="range" id="dInt" min="0" max="1000" step="1" aria-label="Poll interval">
+        </div>
+        <div class="row" style="margin-top:6px">
+          <button class="small" data-ms="100">100 ms</button>
+          <button class="small" data-ms="250">250 ms</button>
+          <button class="small" data-ms="500">500 ms</button>
+          <button class="small" data-ms="1000">1000 ms</button>
+          <button class="small" data-ms="2000">2000 ms</button>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="cell"><div class="label">Measured rate</div><div class="v" id="dRate">—</div></div>
+        <div class="cell"><div class="label">Jitter (σ)</div><div class="v" id="dJitter">—</div></div>
+        <div class="cell"><div class="label">Round trip</div><div class="v" id="dRtt">—</div></div>
+        <div class="cell"><div class="label">IP</div><div class="v" id="dIp">—</div></div>
+        <div class="cell"><div class="label">mDNS</div><div class="v" id="dHost">—</div></div>
+        <div class="cell"><div class="label">Chip UID</div><div class="v" id="dUid">—</div></div>
+        <div class="cell"><div class="label">MAC</div><div class="v" id="dMac">—</div></div>
+        <div class="cell"><div class="label">Uptime</div><div class="v" id="dUp">—</div></div>
+        <div class="cell"><div class="label">USB serial</div><div class="v" id="dAcm">—</div></div>
+        <div class="cell"><div class="label">NCM frames ↓/↑</div><div class="v" id="dFrames">—</div></div>
+        <div class="cell"><div class="label">NCM drops ↓/↑</div><div class="v" id="dDrops">—</div></div>
+      </div>
+      <div>
+        <div class="row" style="justify-content:space-between"><span class="label">Event log</span><button id="dClear" class="small">Clear</button></div>
+        <div class="log" id="dLog"></div>
+      </div>
+    </section>
+
+    <!-- ============ firmware update ============ -->
+    <section class="panel" id="ota">
+      <h2>Firmware update <span class="tag" id="oTag">—</span> <span id="oBadge" class="badge off">Idle</span></h2>
+      <div id="oNote" class="note hidden"></div>
+      <div style="font-size:12px"><span class="muted">Board runs </span><b id="oCur" class="mono">—</b></div>
+      <div class="tabs" role="tablist">
+        <button data-tab="url" class="sel">① Stream from URL</button>
+        <button data-tab="clone">② Clone board→board</button>
+        <button data-tab="file">③ Local .bin file</button>
+      </div>
+      <div id="oNoUsb" class="note hidden" style="margin-bottom:8px">This browser can't flash over USB (it has no WebUSB), so the buttons below are off. Use the page the board serves instead: <a href="http://phone-poc.local/">http://phone-poc.local/</a> updates the firmware over USB Ethernet and works in this browser.</div>
+
+      <div data-pane="url">
+        <div class="row">
+          <input type="url" id="oUrl" spellcheck="false" aria-label="Firmware URL">
+          <button id="oUrlGo" class="primary">Stream &amp; flash</button>
+        </div>
+        <div class="muted" style="font-size:12px;margin-top:6px">The browser fetches the app image (<code>firmware.bin</code>) into memory and writes it to the board; nothing is saved. Default: the published build.</div>
+        <div class="muted" id="oLatest" style="font-size:12px;margin-top:4px"></div>
+        <label id="oWithUpdWrap" class="muted hidden" style="font-size:12px;display:block;margin-top:6px"><input type="checkbox" id="oWithUpd"> Also write the network updater (<code>updater.bin</code> next to <code>firmware.bin</code>). Needed once on a board without it, or with the old flash layout (before 1.1.0).</label>
+      </div>
+
+      <div data-pane="clone" class="hidden">
+        <ol class="steps">
+          <li><button id="oCloneRead" class="primary">Read the firmware from this board</button><div id="oCloneHeld" class="muted mono" style="font-size:12px;margin-top:4px"></div></li>
+          <li>Unplug this board and plug in the target board.</li>
+          <li><button id="oCloneWrite" disabled>Write it to the new board</button><div id="oCloneTarget" class="muted mono" style="font-size:12px;margin-top:4px"></div></li>
+        </ol>
+        <div class="muted" style="font-size:12px;margin-top:8px">Every Phone POC board uses 192.168.7.1, so only one is online at a time. The page keeps the image (<code>GET /api/firmware.bin</code>) in memory while you swap boards.</div>
+      </div>
+
+      <div data-pane="file" class="hidden">
+        <label class="drop" id="oDrop">
+          <input type="file" id="oFile" accept=".bin,application/octet-stream" class="hidden">
+          Drop a Phone POC <b>firmware.bin</b> here, or click to choose a file.
+        </label>
+        <div id="oFullHint" class="muted hidden" style="font-size:12px;margin-top:6px">Also takes a full image linked at 0x08000000 (e.g. the stock firmware): written as is over USB DFU, in place of the network updater and the app.</div>
+      </div>
+
+      <div id="oDfuStep" class="hidden">
+        <div id="oDfuMsg" class="note" style="margin-bottom:6px"></div>
+        <div class="row">
+          <button id="oDfuPick" class="primary">Select the ST bootloader</button>
+          <button id="oDfuReboot" class="small">Reboot the board into the bootloader</button>
+          <button id="oDfuCancel" class="small">Cancel</button>
+          <button class="small" data-help="update" title="Not listed or access denied: drivers and permissions">Not listed?</button>
+        </div>
+      </div>
+      <div>
+        <div class="bar" id="oBar"><div></div></div>
+        <div class="ota-stats" style="margin-top:6px">
+          <span>Progress <b id="oPct">0%</b></span>
+          <span><b id="oBytes">0 / 0</b> KB</span>
+          <span>Rate <b id="oRate">—</b></span>
+          <span>Elapsed <b id="oTime">—</b></span>
+        </div>
+      </div>
+      <div>
+        <div class="row" style="justify-content:space-between"><span class="label">Update log</span><button id="oClear" class="small">Clear</button></div>
+        <div class="log" id="oLog"></div>
+      </div>
+    </section>
+
+    <!-- ============ SCPI console ============ -->
+    <section class="panel full" id="console">
+      <h2>SCPI console <span class="tag" id="cTag">—</span> <span id="cBadge" class="badge off">Disconnected</span></h2>
+      <div id="cNote" class="note hidden"></div>
+      <div class="row" id="serialRow">
+        <button id="cConnect" class="primary">Connect Web Serial</button>
+        <button id="cDisconnect" disabled>Disconnect</button>
+        <button id="cBoard" class="hidden" title="USB Ethernet: opens http://phone-poc.local/ in a new tab with this console">Board page (phone-poc.local)</button>
+      </div>
+      <div class="row">
+        <button class="small" data-c="*IDN?" disabled>*IDN?</button>
+        <button class="small" data-c=":SYSTem:INFO" disabled>:SYST:INFO</button>
+        <button class="small" data-c=":SYSTem:HELP" disabled>:SYST:HELP</button>
+        <button class="small" data-c=":LED?" disabled>:LED?</button>
+        <button class="small" data-c=":VDD?" disabled>:VDD?</button>
+        <button class="small danger" id="cReset" disabled title=":SYSTem:RESet">Reboot</button>
+        <button class="small danger" id="cDfu" disabled title=":SYSTem:DFU 42: reboot into the ST ROM bootloader">Reboot to DFU</button>
+      </div>
+      <div class="row">
+        <input type="text" id="cCmd" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder=":LED:ON;:LED:R 1;:LED:G 0;:LED:B 1" disabled aria-label="SCPI command">
+        <button id="cSend" disabled>Send</button>
+        <label class="muted" style="font-size:12px"><input type="checkbox" id="cShowPoll"> show polls</label>
+      </div>
+      <div>
+        <div class="row" style="justify-content:space-between"><span class="label">Console · ↑/↓ history</span><button id="cClear" class="small">Clear</button></div>
+        <div class="log" id="cLog"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const now = () => performance.now();
+  const ts = () => new Date().toLocaleTimeString([], {hour12:false}) + '.' + String(Date.now()%1000).padStart(3,'0');
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('phonepoc.' + k); return v === null ? d : v; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem('phonepoc.' + k, v); } catch {} },
+  };
+  function logLine(el, cls, text) {
+    const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 30;
+    const d = document.createElement('div');
+    d.className = cls;
+    d.textContent = `${ts()} ${cls === 'rx' ? '◀' : cls === 'tx' ? '▶' : '•'} ${text}`;
+    el.appendChild(d);
+    while (el.childNodes.length > 400) el.removeChild(el.firstChild);
+    if (atBottom) el.scrollTop = el.scrollHeight;
+  }
+  const dlog = (cls, t) => logLine($('dLog'), cls, t);
+  const clog = (cls, t) => logLine($('cLog'), cls, t);
+  const fmtMs = (ms) => ms >= 1000 ? (ms / 1000).toFixed(ms % 1000 ? 2 : 0) + ' s' : ms + ' ms';
+  const fmtUp = (ms) => { const s = Math.floor(ms / 1000); return `${Math.floor(s/3600)}h ${String(Math.floor(s/60)%60).padStart(2,'0')}m ${String(s%60).padStart(2,'0')}s`; };
+  function toast(text) {
+    document.querySelectorAll('.toast').forEach(x => x.remove());  // one box at a time, newest wins
+    const t = document.createElement('div');
+    t.className = 'toast'; t.textContent = text;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 6000);
+  }
+
+  // Served by the board over plain HTTP: talk SCPI over its WebSocket. In a secure context (localhost,
+  // https, file) never make http:// or ws:// requests (mixed content); use Web Serial instead.
+  const USE_WS = location.protocol === 'http:' && !window.isSecureContext;
+  const USE_SERIAL = !USE_WS;
+  // USB ID of the PoC firmware (placeholder CAFE:4F46), and of the board's stock firmware (03E9:0041),
+  // so a stock board can be connected and flashed with the PoC firmware (stock also takes :SYSTem:DFU 42).
+  const STOCK_VID = 0x03e9, STOCK_PID = 0x0041;
+  const SERIAL_FILTERS = [{ usbVendorId: 0xcafe }, { usbVendorId: STOCK_VID, usbProductId: STOCK_PID }];
+  const isStockId = (vid, pid) => vid === STOCK_VID && pid === STOCK_PID;
+  // Android: Chrome's Web Serial lists only Bluetooth ports there (and older Chrome, e.g. on a Pixel 2,
+  // has no Web Serial at all), so the CDC-ACM port is opened over WebUSB with Google's
+  // web-serial-polyfill.
+  const USB_SERIAL = /Android/.test(navigator.userAgent) && window.isSecureContext && 'usb' in navigator;
+  const HAS_SERIAL = USB_SERIAL || 'serial' in navigator;
+  const SERIAL_LABEL = USB_SERIAL ? 'USB serial' : 'Web Serial';
+  // Only the board's CDC-ACM function (class 2, subclass 2); its CDC-NCM function is subclass 13.
+  const USB_ACM_FILTERS = [{ vendorId: 0xcafe, classCode: 2, subclassCode: 2 },
+    { vendorId: STOCK_VID, productId: STOCK_PID, classCode: 2, subclassCode: 2 }];
+  const isUsbAcm = (d) => (d.vendorId === 0xcafe || isStockId(d.vendorId, d.productId)) && (d.configurations[0] || { interfaces: [] }).interfaces
+    .some(i => i.alternates[0] && i.alternates[0].interfaceClass === 2 && i.alternates[0].interfaceSubclass === 2);
+  // Next to this page (vendor/: published sites and serve.py), then the CDN.
+  const POLYFILL_URLS = [new URL('vendor/web-serial-polyfill.js', document.baseURI).href,
+    'https://cdn.jsdelivr.net/npm/web-serial-polyfill@1.0.15/dist/serial.js'];
+  let polyfillPromise = null;
+  const loadPolyfill = () => (polyfillPromise ||= POLYFILL_URLS.reduce((p, u) => p.catch(() => import(u)), Promise.reject())
+    .catch(e => { polyfillPromise = null; throw new Error('could not load web-serial-polyfill (' + e.message + ')'); }));
+  // A port the user already granted: after a reboot (DFU) it comes back without a chooser.
+  async function grantedPort() {
+    if (USB_SERIAL) {
+      const d = (await navigator.usb.getDevices()).find(isUsbAcm);
+      return d ? new (await loadPolyfill()).SerialPort(d) : null;
+    }
+    if (!('serial' in navigator)) return null;
+    return (await navigator.serial.getPorts()).find(p => SERIAL_FILTERS.some(f => f.usbVendorId === p.getInfo().usbVendorId &&
+      (!f.usbProductId || f.usbProductId === p.getInfo().usbProductId))) || null;
+  }
+
+  // =====================================================================
+  // SCPI client: one line at a time, reply = everything up to the "(STATUS)>" prompt
+  // =====================================================================
+  const PROMPT = /(?:^|\n)\(([\w:]+)\)>\s*$/;
+  const S = { conn: null, queue: [], cur: null, rx: '', discard: false, quietTimer: null, timeouts: 0 };
+
+  // Resolves to { status, text, ms }; rejects when the connection is gone or the board times out.
+  function scpi(line, opts = {}) {
+    return new Promise((resolve, reject) => {
+      if (!S.conn) return reject(new Error('not connected'));
+      S.queue.push({ line, resolve, reject, poll: !!opts.poll, timeout: opts.timeout || 3000 });
+      pump();
+    });
+  }
+  const showTx = (c) => !c.poll || $('cShowPoll').checked;
+
+  function pump() {
+    if (S.cur || S.discard || !S.conn || !S.queue.length) return;
+    const c = S.cur = S.queue.shift();
+    S.rx = '';
+    c.t0 = now();
+    c.timer = setTimeout(() => onTimeout(c), c.timeout);
+    if (showTx(c)) clog('tx', c.line);
+    Promise.resolve(S.conn.write(c.line + '\n')).catch(e => connLost('write failed: ' + e.message));
+  }
+
+  function onRx(text) {
+    if (monPart || text.indexOf('\x01') >= 0) text = monSplit(text);
+    if (!text) return;
+    if (S.discard) { quietThen(); return; }
+    if (!S.cur) { clog('sys', 'unexpected: ' + JSON.stringify(text)); return; }
+    S.rx += text;
+    const m = S.rx.match(PROMPT);
+    if (!m) { if (S.rx.length > 65536) S.rx = S.rx.slice(-1024); return; }
+    const c = S.cur; S.cur = null;
+    clearTimeout(c.timer);
+    S.timeouts = 0;
+    const r = { status: m[1], text: S.rx.slice(0, m.index).replace(/\r/g, '').replace(/\n$/, ''), ms: now() - c.t0 };
+    if (showTx(c) || r.status !== 'OK') clog(r.status === 'OK' ? 'rx' : 'err', (r.text ? r.text + '\n' : '') + `(${r.status})>` + `  ${r.ms.toFixed(0)} ms`);
+    c.resolve(r);
+    pump();
+  }
+
+  // No prompt in time: drop the line and whatever trails it (400 ms of quiet), as the pages do.
+  function onTimeout(c) {
+    if (S.cur !== c) return;
+    S.cur = null;
+    clog('err', `${c.line}: no prompt after ${c.timeout} ms`);
+    c.reject(new Error('timeout'));
+    quietThen();
+    // A board unplugged without a TCP close (or a swapped board) leaves a dead WebSocket: drop it.
+    if (++S.timeouts >= 2 && S.conn) { S.timeouts = 0; clog('err', 'no answers: closing the connection'); S.conn.close(); }
+  }
+  function quietThen() {
+    S.discard = true;
+    clearTimeout(S.quietTimer);
+    S.quietTimer = setTimeout(() => { S.discard = false; pump(); }, 400);
+  }
+
+  function attach(conn) {
+    S.conn = conn; S.rx = ''; S.discard = false; S.timeouts = 0;
+    clog('sys', conn.label + ' connected');
+    dlog('sys', conn.label + ' connected');
+    onConnected();
+  }
+  function connLost(why) {
+    if (!S.conn) return;
+    const label = S.conn.label;
+    S.conn = null;
+    const pending = (S.cur ? [S.cur] : []).concat(S.queue);
+    S.cur = null; S.queue = [];
+    pending.forEach(c => { clearTimeout(c.timer); c.reject(new Error('disconnected')); });
+    clog('sys', `${label} closed${why ? ' (' + why + ')' : ''}`);
+    dlog('sys', `${label} closed${why ? ' (' + why + ')' : ''}`);
+    onDisconnected();
+  }
+
+  // ---------------- WebSocket (board-served page) ----------------
+  let wsFails = 0;
+  function wsConnect() {
+    if (B.status && B.status.mode === 'updater') { W.state = 'idle'; render(); return wsRetry(); }
+    let ws, opened = false;
+    try { ws = new WebSocket(`ws://${location.host}/ws`); } catch { return wsRetry(); }
+    W.state = 'connecting'; render();
+    ws.onopen = () => {
+      opened = true; wsFails = 0; W.state = 'open';
+      attach({ label: 'WebSocket', write: (t) => ws.send(t), close: () => ws.close() });
+    };
+    ws.onmessage = (e) => onRx(typeof e.data === 'string' ? e.data : '');
+    ws.onclose = () => {
+      W.state = 'closed';
+      if (opened) connLost(); else wsFails++;
+      render();
+      wsRetry();
+    };
+  }
+  const W = { state: 'idle' };
+  function wsRetry() { setTimeout(wsConnect, B.status && B.status.mode === 'updater' ? 1000 : Math.min(5000, 1000 * (1 + wsFails))); }
+
+  // ---------------- Web Serial (secure context) ----------------
+  const P = { port: null, reader: null, writer: null, closing: false };
+  async function serialConnect() {
+    P.lastError = '';
+    try {
+      if (USB_SERIAL) {
+        // The polyfill is preloaded at start, so requestDevice() still runs inside the tap's user activation.
+        const poly = await loadPolyfill();
+        await serialOpen(new poly.SerialPort(await navigator.usb.requestDevice({ filters: USB_ACM_FILTERS })));
+      } else {
+        await serialOpen(await navigator.serial.requestPort({ filters: SERIAL_FILTERS }));
+      }
+    } catch (e) {
+      if (e.name === 'NotFoundError') return;  // dialog closed without a pick
+      // open() fails with a NetworkError when another program holds the port: another browser
+      // (or tab) with this console, a terminal, flash.sh. Say so where the user is looking.
+      const busy = e.name === 'NetworkError' || /open serial port/i.test(e.message);
+      P.lastError = busy
+        ? 'The serial port is in use by another program (another browser or tab with this console, a terminal, flash.sh). Close it, then connect again.'
+        : 'Connecting failed: ' + e.message + ' (see ? Help at the top)';
+      clog('err', P.lastError);
+      toast(P.lastError);
+      if (OTA.busy) olog('err', P.lastError);
+    }
+  }
+  async function serialOpen(port) {
+    await port.open({ baudRate: 115200 });
+    P.port = port; P.closing = false;
+    P.writer = port.writable.getWriter();
+    const enc = new TextEncoder();
+    // The polyfill's port has no events; navigator.usb's 'disconnect' covers it (init below).
+    if (port.addEventListener) port.addEventListener('disconnect', () => serialClose('unplugged'), { once: true });
+    serialRead(port);
+    // Stock firmware: no network updater in sectors 0-3 yet, so the PoC app alone would not start.
+    const id = port.device_ ? [port.device_.vendorId, port.device_.productId] : [port.getInfo().usbVendorId, port.getInfo().usbProductId];
+    if (isStockId(id[0], id[1])) {
+      $('oWithUpd').checked = true;
+      clog('sys', 'board with the stock firmware (03E9:0041): Stream & flash writes the network updater and the PoC app (ticked below)');
+    }
+    attach({ label: SERIAL_LABEL, write: (t) => P.writer.write(enc.encode(t)), close: () => serialClose() });
+  }
+  // One open at a time: the Android replug listener and serialIdn() (after a DFU reboot) can race.
+  let serialOpening = null;
+  function serialOpenOnce(getPort) {
+    return serialOpening ||= (async () => {
+      try { if (!P.port) { const port = await getPort(); if (port) await serialOpen(port); } }
+      finally { serialOpening = null; }
+    })();
+  }
+  // Android replug: Chrome fires navigator.usb 'connect' only for devices this origin was granted,
+  // so reopen the device without the chooser. Retry briefly in case it is still enumerating.
+  async function usbReplug(dev) {
+    if (P.port || !isUsbAcm(dev)) return;
+    clog('sys', 'USB serial device attached: reconnecting');
+    for (let i = 1; i <= 4 && !P.port; i++) {
+      try { await serialOpenOnce(async () => new (await loadPolyfill()).SerialPort(dev)); }
+      catch (e) {
+        if (i === 4) clog('err', 'USB serial reconnect failed (' + e.message + '). Tap Connect');
+        else await sleep(500);
+      }
+    }
+  }
+  async function serialRead(port) {
+    const dec = new TextDecoder();
+    while (port.readable && !P.closing) {
+      P.reader = port.readable.getReader();
+      try {
+        for (;;) {
+          const { value, done } = await P.reader.read();
+          if (done) break;
+          onRx(dec.decode(value, { stream: true }));
+        }
+      } catch (e) {
+        // Unplugged on Android: the polyfill's read rejects without a message, before navigator.usb's 'disconnect'.
+        if (!P.closing) {
+          if (e && e.message) { clog('err', 'read error: ' + e.message); serialClose('read error'); }
+          else serialClose('unplugged');
+        }
+      } finally { try { P.reader.releaseLock(); } catch {} P.reader = null; }
+    }
+  }
+  async function serialClose(why) {
+    if (!P.port) return;
+    P.closing = true;
+    const port = P.port; P.port = null;
+    connLost(why);
+    try { if (P.reader) await P.reader.cancel(); } catch {}
+    try { if (P.writer) P.writer.releaseLock(); } catch {}
+    P.writer = null;
+    try { await port.close(); } catch {}
+  }
+
+  // :SYSTem:MONitor events ("\x01...\n", spec §5.5) only come after this channel sends :SYST:MON ON,
+  // which this console no longer does. Cut any out of the stream anyway, before the prompt parser.
+  let monPart = '';
+  function monSplit(text) {
+    let s = monPart + text, out = '';
+    monPart = '';
+    for (;;) {
+      const i = s.indexOf('\x01');
+      if (i < 0) { out += s; break; }
+      out += s.slice(0, i);
+      const j = s.indexOf('\n', i);
+      if (j < 0) { monPart = s.slice(i); break; }
+      s = s.slice(j + 1);
+    }
+    return out;
+  }
+
+  // =====================================================================
+  // Board state
+  // =====================================================================
+  const B = { idn: null, led: null, ext: true, ticks: null, rtt: null, times: [], status: null };
+  // ext: the board answers :LED? (PoC extension). Stock firmware v1.2.1 answers (ERROR); then the page
+  // tracks the colour it set itself and Identify is off.
+
+  async function onConnected() {
+    B.idn = null; B.led = null; B.ext = true; B.times = []; B.ticks = null; B.rtt = null;
+    render();
+    try {
+      await scpi('');  // syncs a serial line that was left half typed
+      const r = await scpi('*IDN?');
+      if (r.status === 'OK') {
+        const f = r.text.trim().split(',');
+        B.idn = { model: f[1] || '', serial: f[2] || '', version: f[3] || '', build: f[4] || '', time: f[5] || '' };
+        dlog('rx', r.text.trim());
+      }
+      if (B.idn && B.idn.version.startsWith('updater')) {  // the network updater (Web Serial)
+        const m = await scpi(':SYSTem:MODE?');
+        B.updReason = m.status === 'OK' ? m.text.replace(/^UPDATER,/, '') : '';
+        B.ext = false;
+        render();
+        return;
+      }
+      const l = await scpi(':LED?');
+      B.ext = l.status === 'OK';
+      if (B.ext) B.led = parseLed(l.text); else dlog('sys', ':LED? not supported (stock firmware?): indicator follows this page, Identify off');
+    } catch {}
+    render();
+    pollSoon(0);
+  }
+  function onDisconnected() {
+    B.times = [];
+    monPart = '';
+    render();
+  }
+
+  const parseLed = (t) => { const v = t.trim().split(',').map(Number); return v.length === 4 && v.every(x => x === 0 || x === 1) ? { custom: v[0], r: v[1], g: v[2], b: v[3] } : null; };
+  const lit = (l) => !!(l && l.custom && (l.r || l.g || l.b));
+
+  // ---------------- polling (SCPI has no push: the page asks) ----------------
+  let pollMs = +store.get('pollMs', 500), pollTimer = null;
+  function pollSoon(ms) { clearTimeout(pollTimer); pollTimer = setTimeout(poll, ms); }
+  async function poll() {
+    const t0 = now();
+    // Skip a tick while the console has work queued or the tab is hidden (iPhone in the background).
+    if (S.conn && !document.hidden && !S.cur && !S.queue.length) {
+      try {
+        const [l, t] = await Promise.all([B.ext ? scpi(':LED?', { poll: true }) : null, scpi(':SYSTem:TIME:MS?', { poll: true })]);
+        if (l && l.status === 'OK') B.led = parseLed(l.text);
+        if (t.status === 'OK') B.ticks = parseInt(t.text, 10);
+        B.rtt = (now() - t0) / (B.ext ? 2 : 1);
+        const tt = now();
+        B.times.push(tt);
+        while (B.times.length > 2 && tt - B.times[0] > 5000) B.times.shift();
+        beat();
+        render();
+      } catch {}
+    }
+    if (S.conn) pollSoon(Math.max(0, pollMs - (now() - t0)));
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && S.conn) pollSoon(0); });
+
+  // /status.json: network counters that SCPI does not report (board-served page only).
+  async function pollStatus() {
+    if (!USE_WS || document.hidden) return;
+    try {
+      const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 1500);
+      const r = await fetch('/status.json', { cache: 'no-store', signal: ac.signal });
+      clearTimeout(t);
+      B.status = await r.json();
+    } catch { B.status = null; }
+    render();
+  }
+  if (USE_WS) setInterval(pollStatus, 2000);
+
+  // =====================================================================
+  // Controls → SCPI
+  // =====================================================================
+  const ledLine = (r, g, b) => `:LED:ON;:LED:R ${r};:LED:G ${g};:LED:B ${b}`;
+  async function cmd(line, what) {
+    dlog('tx', line);
+    try {
+      const r = await scpi(line);
+      if (r.status === 'OK') dlog('rx', (r.text ? r.text + ' ' : '') + '(OK)');
+      else { dlog('err', `${r.text} (${r.status})`.trim()); toast(`${what || line}: (${r.status}) ${r.text}`); }
+      return r;
+    } catch (e) { dlog('err', `${line}: ${e.message}`); toast(`${what || line}: ${e.message}`); return null; }
+  }
+  async function setColour(r, g, b) {
+    const res = await cmd(ledLine(r, g, b));
+    if (res && res.status === 'OK') { if (!B.ext) B.led = { custom: 1, r, g, b }; await refreshLed(); }
+  }
+  async function refreshLed() {
+    if (!B.ext) { render(); return; }
+    try { const l = await scpi(':LED?', { poll: true }); if (l.status === 'OK') B.led = parseLed(l.text); } catch {}
+    render();
+  }
+  document.querySelectorAll('[data-led]').forEach(btn => btn.onclick = async () => {
+    const a = btn.dataset.led;
+    if (a === 'on') return setColour(0, 1, 0);
+    if (a === 'off') return setColour(0, 0, 0);
+    if (a === 'status') {
+      const r = await cmd(':LED:OFF');
+      if (r && r.status === 'OK') { if (!B.ext && B.led) B.led = { ...B.led, custom: 0 }; await refreshLed(); }
+      return;
+    }
+    // toggle: the board keeps no toggle state, so ask first (two round trips)
+    await refreshLed();
+    return lit(B.led) ? setColour(0, 0, 0) : setColour(0, 1, 0);
+  });
+  document.querySelectorAll('[data-rgb]').forEach(btn => btn.onclick = () => setColour(...btn.dataset.rgb.split(',').map(Number)));
+  $('dIdentify').onclick = async () => {
+    const r = await cmd(':LED:IDENTify');
+    if (r && r.status === 'OK') { const s = $('dStats'); s.classList.remove('identify'); void s.offsetWidth; s.classList.add('identify'); }
+  };
+
+  // poll interval: a page setting (log scale 50 ms … 10 s)
+  const intToSlider = (ms) => Math.round(1000 * Math.log(ms / 50) / Math.log(200));
+  const sliderToInt = (v) => { const ms = 50 * Math.pow(200, v / 1000); return ms < 1000 ? Math.round(ms / 10) * 10 : Math.round(ms / 50) * 50; };
+  function setPoll(ms) { pollMs = ms; store.set('pollMs', ms); B.times = []; render(); if (S.conn) pollSoon(0); }
+  document.querySelectorAll('[data-ms]').forEach(btn => btn.onclick = () => setPoll(+btn.dataset.ms));
+  $('dInt').addEventListener('input', () => setPoll(sliderToInt(+$('dInt').value)));
+  $('dClear').onclick = () => $('dLog').textContent = '';
+
+  // ---------------- console ----------------
+  const hist = []; let histPos = 0;
+  async function consoleSend(line) {
+    try { await scpi(line, { timeout: 10000 }); } catch (e) { clog('err', `${line}: ${e.message}`); }
+    refreshLed();
+  }
+  document.querySelectorAll('[data-c]').forEach(b => b.onclick = () => consoleSend(b.dataset.c));
+  $('cSend').onclick = () => {
+    const v = $('cCmd').value.trim();
+    if (!v || !S.conn) return;
+    if (hist[hist.length - 1] !== v) hist.push(v);
+    histPos = hist.length;
+    $('cCmd').value = '';
+    consoleSend(v);
+  };
+  $('cCmd').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') $('cSend').click();
+    else if (e.key === 'ArrowUp' && histPos > 0) { $('cCmd').value = hist[--histPos]; e.preventDefault(); }
+    else if (e.key === 'ArrowDown' && histPos < hist.length) { histPos++; $('cCmd').value = hist[histPos] || ''; e.preventDefault(); }
+  });
+  $('cClear').onclick = () => $('cLog').textContent = '';
+  async function reboot(line, text) {
+    if (!confirm(text)) return;
+    try { await scpi(line); } catch {}
+    dlog('sys', line + ' sent; the board reboots' + (USE_WS ? ', the page reconnects when it is back' : ''));
+  }
+  $('cReset').onclick = () => reboot(':SYSTem:RESet', 'Reboot the board?');
+  $('cDfu').onclick = () => reboot(':SYSTem:DFU 42', 'Reboot into the ST ROM bootloader (USB DFU)?\nThe board stays there until it is flashed (flash.sh) or reset.');
+  const connect = () => (HAS_SERIAL ? serialConnect() : showBoardBanner());
+  $('cConnect').onclick = $('hdrConnect').onclick = connect;
+  $('cDisconnect').onclick = () => serialClose();
+
+  // =====================================================================
+  // Firmware update: flash layout A (App/image.h)
+  //   app image = vectors | +0x200 header {magic, size, version} | code | CRC-32 of [0, size)
+  //   board page (USB Ethernet): :SYSTem:UPDate -> network updater -> POST /api/update -> app
+  //   secure context (Web Serial): :SYSTem:DFU 42 -> ST ROM bootloader -> WebUSB DfuSe -> updater -> app
+  //   full image (no app header, linked at 0x08000000, e.g. the stock firmware): ROM DFU only, written as is
+  // =====================================================================
+  // GitHub Pages (karelv/phone-poc, CI job github-pages): this console at the root, ui.json, firmware.bin
+  const PUBLISHED_BASE = 'https://karelv.github.io/phone-poc/';
+  const PUBLISHED_BIN = PUBLISHED_BASE + 'firmware.bin';
+  const isServePy = location.port === '8000' && location.hostname === 'localhost';
+  const DEFAULT_URL = isServePy ? location.origin + '/firmware-f446/build/Release/firmware.bin' : PUBLISHED_BIN;
+  // Since 1.1.0 / updater-1.1.0: updater in sectors 0-3 (64 KB), app at 0x08010000 (448 KB). Before: updater
+  // in sectors 0-4, app at 0x08020000. An old updater refuses a new app, and a new app written over DFU
+  // without the new updater overwrites the end of the old one, so a board changes layout only over DFU
+  // with "Also write the network updater".
+  const UPDATER_BASE = 0x08000000, APP_BASE = 0x08010000, APP_MAX = 448 * 1024, HDR = 0x200, MAGIC = 0x41434f4d;
+  const OLD_APP_BASE = 0x08020000, FLASH_SIZE = 512 * 1024;
+  const FULL_HTTP_MSG = 'This is a full image for 0x08000000 (no Phone POC app header), e.g. the stock firmware. ' +
+    'The network updater writes only Phone POC apps (it cannot replace itself), so write this one over USB DFU: ' +
+    'open this console over HTTPS on a desktop or Android (Chrome/Edge), or use STM32CubeProgrammer. Nothing was written.';
+  const OLD_LAYOUT_MSG = 'This board has the old flash layout (network updater up to updater-1.0.0, app at 0x08020000). ' +
+    'It cannot take a 1.1.0 app over the network. Switch it once over USB DFU: open this console over HTTPS on a ' +
+    'desktop or Android (Chrome/Edge), tick "Also write the network updater" and use Stream & flash (or run flash.sh).';
+  const HAS_USB = window.isSecureContext && 'usb' in navigator;
+  const OTA = { busy: false, tab: 'url', t0: 0, clone: null, pick: null, transport: USE_WS ? 'http' : 'dfu' };
+  const olog = (cls, t) => logLine($('oLog'), cls, t);
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  const kb = (n) => (n / 1024).toFixed(1);
+  const hex = (n) => '0x' + n.toString(16).padStart(8, '0');
+
+  const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(u8) { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+
+  // The same checks as the network updater (Updater/upd_flash.c), so a wrong file never gets that far.
+  function parseImage(u8) {
+    if (u8.length < HDR + 80 + 4) throw new Error(`file too small (${u8.length} bytes) for a Phone POC app image`);
+    if (u8.length > APP_MAX) throw new Error(`image is ${kb(u8.length)} KB, the app area is 448 KB`);
+    const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+    if (dv.getUint32(HDR, true) !== MAGIC)
+      throw new Error("not a Phone POC app image (no header at +0x200), nor a full image linked at 0x08000000 " +
+        "(another board's .bin, or a pre-layout-A build?)");
+    const size = dv.getUint32(HDR + 8, true);
+    if (size + 4 !== u8.length) throw new Error(`header size ${size} + 4-byte CRC does not match the file length ${u8.length}`);
+    if (crc32(u8.subarray(0, size)) !== dv.getUint32(size, true)) throw new Error('CRC mismatch: the file is damaged or incomplete');
+    const sp = dv.getUint32(0, true), pc = dv.getUint32(4, true);
+    if (pc >= OLD_APP_BASE && pc < OLD_APP_BASE + size)
+      throw new Error(`built for the old flash layout (app at ${hex(OLD_APP_BASE)}, before 1.1.0): this console writes apps at ${hex(APP_BASE)}`);
+    if (sp <= 0x20000000 || sp > 0x20020000 || !(pc & 1) || pc < APP_BASE || pc >= APP_BASE + size)
+      throw new Error(`vector table does not fit an app at ${hex(APP_BASE)}`);
+    const v = u8.subarray(HDR + 16, HDR + 80);
+    return { version: new TextDecoder().decode(v.subarray(0, v.indexOf(0) < 0 ? 64 : v.indexOf(0))), crc: dv.getUint32(size, true) };
+  }
+  function checkUpdater(u8) {
+    const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+    const sp = dv.getUint32(0, true), pc = dv.getUint32(4, true);
+    if (u8.length > APP_BASE - UPDATER_BASE || sp <= 0x20000000 || sp > 0x20020000 || pc < UPDATER_BASE || pc >= APP_BASE)
+      throw new Error('updater.bin does not look like the network updater (sectors 0-3, at most 64 KB)');
+    if (u8.length > HDR + 4 && dv.getUint32(HDR, true) === MAGIC) throw new Error('updater.bin is an app image');
+  }
+  // A full image for this board, linked at 0x08000000 (stock or other firmware, or a flash dump): no app header,
+  // initial SP in RAM, reset vector inside the image. Only ROM DFU writes it (as is); null if it is not one.
+  function parseFull(u8) {
+    if (u8.length < 8 || u8.length > FLASH_SIZE) return null;
+    const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
+    if (u8.length >= HDR + 4 && dv.getUint32(HDR, true) === MAGIC) return null;  // a Phone POC app
+    const sp = dv.getUint32(0, true), pc = dv.getUint32(4, true);
+    if (sp <= 0x20000000 || sp > 0x20020000 || !(pc & 1) || pc < UPDATER_BASE || pc >= UPDATER_BASE + u8.length) return null;
+    return { crc: crc32(u8) };
+  }
+
+  function otaUi(cls, text) { const b = $('oBadge'); b.className = 'badge ' + cls; b.textContent = text; render(); }
+  function otaProgress(done, total) {
+    const pct = total ? Math.min(100, Math.floor(done * 100 / total)) : 0;
+    $('oBar').firstElementChild.style.width = pct + '%';
+    set('oPct', pct + '%');
+    set('oBytes', `${kb(done)} / ${kb(total)}`);
+    const s = (now() - OTA.t0) / 1000;
+    set('oTime', s.toFixed(1) + ' s');
+    set('oRate', s > 0.2 && done ? (done / 1024 / s).toFixed(1) + ' KB/s' : '—');
+  }
+  async function fetchT(url, ms, opts = {}) {
+    const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms);
+    try { return await fetch(url, { ...opts, cache: 'no-store', signal: ac.signal }); } finally { clearTimeout(t); }
+  }
+  async function fetchBinary(url, what) {
+    olog('sys', `fetching ${what}: ${url}`);
+    let r;
+    try { r = await fetch(url, { cache: 'no-store' }); }
+    catch (e) { throw new Error(`could not fetch ${url} (${e.message}; offline, or the server sends no CORS header)`); }
+    if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
+    const u8 = new Uint8Array(await r.arrayBuffer());
+    olog('sys', `${what}: ${kb(u8.length)} KB`);
+    return u8;
+  }
+
+  async function runOta(getImages) {
+    if (OTA.busy) return;
+    OTA.busy = true; OTA.t0 = now();
+    $('oBar').className = 'bar'; otaProgress(0, 1);
+    otaUi('wait', 'Preparing…');
+    try {
+      // ST ROM DFU needs the board in the bootloader, and only the serial connection can send it
+      // there. Connect now, while the click still counts as a user gesture (the port chooser needs one).
+      if (OTA.transport === 'dfu' && !S.conn && HAS_SERIAL && !(await grantedDfu()) &&
+          (!navigator.userActivation || navigator.userActivation.isActive)) {
+        olog('sys', 'USB serial is not connected: pick the board in the browser dialog, so the page can reboot it into the ST bootloader');
+        await serialConnect();
+      }
+      const { u8, updater } = await getImages();
+      const full = parseFull(u8);
+      if (full) {
+        if (OTA.transport === 'http') throw new Error(FULL_HTTP_MSG);
+        olog('sys', `full image for ${hex(UPDATER_BASE)} (no Phone POC app header) · ${kb(u8.length)} KB · CRC ${full.crc.toString(16).padStart(8, '0')}`);
+        olog('sys', u8.length > APP_BASE - UPDATER_BASE
+          ? 'it replaces the network updater and the app. Back to the Phone POC: Stream & flash with "Also write the network updater"'
+          : 'it fits in sectors 0-3 (the network updater): the app stays');
+        OTA.t0 = now();
+        await flashDfuFull(u8);
+      } else {
+        const info = parseImage(u8);
+        if (updater) checkUpdater(updater);
+        olog('sys', `app image ${info.version} · ${kb(u8.length)} KB · CRC ${info.crc.toString(16).padStart(8, '0')} ok`);
+        OTA.t0 = now();
+        if (OTA.transport === 'http') await flashHttp(u8, info); else await flashDfu(u8, info, updater);
+      }
+      $('oBar').className = 'bar okb';
+      otaUi('on', 'Done');
+      olog('okl', `done in ${((now() - OTA.t0) / 1000).toFixed(1)} s`);
+    } catch (e) {
+      $('oBar').className = 'bar errb';
+      otaUi('err', 'Failed');
+      olog('err', e.message);
+      toast('Firmware update: ' + e.message);
+    } finally {
+      OTA.busy = false;
+      OTA.pick = null;
+      $('oDfuStep').classList.add('hidden');
+      render();
+    }
+  }
+  window.addEventListener('beforeunload', (e) => { if (OTA.busy) { e.preventDefault(); e.returnValue = ''; } });
+
+  // ---------------- USB Ethernet: network updater ----------------
+  async function boardStatus() { const r = await fetchT('/status.json', 1500); return r.json(); }
+  async function waitMode(mode, ms, what) {
+    const end = now() + ms;
+    while (now() < end) {
+      try { const st = await boardStatus(); B.status = st; render(); if (st.mode === mode) return st; } catch {}
+      await sleep(500);
+    }
+    throw new Error('timeout waiting for ' + what);
+  }
+  function xhrUpload(u8) {
+    return new Promise((resolve, reject) => {
+      const x = new XMLHttpRequest();
+      x.open('POST', '/api/update');
+      x.timeout = 60000;
+      x.setRequestHeader('Content-Type', 'application/octet-stream');
+      x.upload.onprogress = (e) => otaProgress(e.loaded, u8.length);
+      x.onload = () => {
+        try { resolve(JSON.parse(x.responseText)); } catch { reject(new Error(`HTTP ${x.status}: ${x.responseText.trim()}`)); }
+      };
+      x.onerror = () => reject(new Error('upload failed: connection lost'));
+      x.ontimeout = () => reject(new Error('upload timed out'));
+      x.send(u8);
+    });
+  }
+  async function flashHttp(u8, info) {
+    let st = await boardStatus().catch(() => null);
+    if (!st) throw new Error('board not reachable over USB Ethernet');
+    // app_base: since 1.1.0 / updater-1.1.0, both in app and in updater mode
+    if (st.app_base !== hex(APP_BASE)) throw new Error(OLD_LAYOUT_MSG);
+    if (st.mode !== 'updater') {
+      for (let i = 0; i < 20 && !S.conn; i++) await sleep(500);  // a just swapped board: WebSocket still connecting
+      if (!S.conn) throw new Error('no SCPI connection to the app (WebSocket busy or closed)');
+      olog('tx', ':SYSTem:UPDate');
+      const r = await scpi(':SYSTem:UPDate');
+      if (r.status !== 'OK') throw new Error(`:SYSTem:UPDate answered (${r.status}): this firmware has no network updater. Install layout A once with flash.sh, or with WebUSB DFU from the HTTPS/localhost copy of this console.`);
+      otaUi('wait', 'Into the updater…');
+      st = await waitMode('updater', 20000, 'the network updater');
+      olog('sys', `network updater up: ${st.updater}`);
+      if (st.app_base !== hex(APP_BASE)) throw new Error(OLD_LAYOUT_MSG);
+    }
+    otaUi('wait', 'Erase + write…');
+    olog('sys', `POST /api/update (${kb(u8.length)} KB)`);
+    const res = await xhrUpload(u8);
+    if (!res.ok) throw new Error(res.error + (res.erased ? '. The app area was erased: the board stays in the updater, flash again.' : '. Nothing was erased.'));
+    olog('okl', `written and CRC-checked in flash (${res.version}); the board restarts`);
+    otaUi('wait', 'Starting the app…');
+    st = await waitMode('app', 20000, 'the new app');
+    if (st.image.version !== info.version) throw new Error(`the board runs ${st.image.version}, expected ${info.version}`);
+    olog('okl', `app running: ${st.image.version}`);
+  }
+
+  // ---------------- secure context: ST ROM bootloader over WebUSB (DfuSe, AN3156) ----------------
+  const isDfu = (d) => d.vendorId === 0x0483 && d.productId === 0xdf11;
+  // F446 sectors: 4 x 16 KB, 64 KB, 3 x 128 KB
+  const SECTORS = [[0x08000000, 16384], [0x08004000, 16384], [0x08008000, 16384], [0x0800c000, 16384],
+    [0x08010000, 65536], [0x08020000, 131072], [0x08040000, 131072], [0x08060000, 131072]];
+  const sectorsFor = (a, n) => SECTORS.filter(([s, l]) => s < a + n && s + l > a).map(x => x[0]);
+
+  const grantedDfu = async () => HAS_USB ? (await navigator.usb.getDevices()).find(isDfu) : undefined;
+
+  // The app or the updater on serial: reboot it into the ROM bootloader, then wait up to 4 s for a
+  // bootloader this page already has permission for (the browser remembers the first pick).
+  async function dfuViaSerial() {
+    if (!S.conn) return null;
+    olog('tx', ':SYSTem:DFU 42');
+    try { await scpi(':SYSTem:DFU 42'); } catch {}
+    for (let i = 0; i < 16; i++) { await sleep(250); const d = await grantedDfu(); if (d) return d; }
+    return null;
+  }
+
+  function dfuStepMsg(inLoader) {
+    $('oDfuMsg').innerHTML = inLoader
+      ? 'The board is in the ST bootloader. Click <b>Select the ST bootloader</b> and pick <b>STM32 BOOTLOADER</b> (0483:df11). The browser asks only the first time.'
+      : 'The board is not in the ST bootloader yet, so the browser has nothing to list. Click <b>Reboot the board into the bootloader</b> (it connects USB serial if needed), or hold BOOT, press and release RST, release BOOT. Then click <b>Select the ST bootloader</b>.';
+    $('oDfuReboot').classList.toggle('hidden', inLoader);
+  }
+
+  async function dfuDevice() {
+    let dev = await grantedDfu();
+    if (dev) return dev;
+    const viaSerial = !!S.conn;
+    dev = await dfuViaSerial();
+    if (dev) return dev;
+    // First time in this browser: picking the bootloader needs a click of its own.
+    olog('sys', viaSerial
+      ? 'the board is in the ST bootloader: click "Select the ST bootloader" and pick STM32 BOOTLOADER'
+      : 'no USB serial connection, so the board is still in its firmware: see the note above the buttons');
+    dfuStepMsg(viaSerial);
+    $('oDfuStep').classList.remove('hidden');
+    const picked = new Promise((resolve, reject) => { OTA.pick = { resolve, reject }; });
+    otaUi('wait', 'Waiting for the ST bootloader…');
+    return picked;
+  }
+  $('oDfuPick').onclick = async () => {
+    const p = OTA.pick;
+    if (!p) return;
+    try {
+      const d = await navigator.usb.requestDevice({ filters: [{ vendorId: 0x0483, productId: 0xdf11 }] });
+      OTA.pick = null; $('oDfuStep').classList.add('hidden'); p.resolve(d);
+    } catch (e) {
+      if (e.name !== 'NotFoundError') { OTA.pick = null; p.reject(e); return; }
+      // Dialog closed without a pick: maybe it was empty because the board is not in the bootloader.
+      olog('sys', 'nothing picked. If STM32 BOOTLOADER was not listed, the board is not in the bootloader yet');
+      dfuStepMsg(false);
+    }
+  };
+  $('oDfuReboot').onclick = async () => {
+    if (!OTA.pick) return;
+    if (!S.conn && HAS_SERIAL) await serialConnect();
+    if (!S.conn) {
+      $('oDfuMsg').textContent = (P.lastError || 'No USB serial connection.') + ' Or put the board into the bootloader by hand: hold BOOT, press and release RST, release BOOT; then click Select the ST bootloader.';
+      return;
+    }
+    const d = await dfuViaSerial();
+    const p = OTA.pick;
+    if (d && p) { OTA.pick = null; $('oDfuStep').classList.add('hidden'); p.resolve(d); return; }
+    dfuStepMsg(true);
+  };
+  $('oDfuCancel').onclick = () => { const p = OTA.pick; OTA.pick = null; if (p) p.reject(new Error('cancelled')); };
+
+  async function dfuOpen(dev) {
+    await dev.open();
+    if (!dev.configuration) await dev.selectConfiguration(1);
+    const itf = dev.configuration.interfaces.find(i => i.alternates.some(a => a.interfaceClass === 0xfe && a.interfaceSubclass === 1));
+    if (!itf) throw new Error('the device has no DFU interface');
+    await dev.claimInterface(itf.interfaceNumber);
+    await dev.selectAlternateInterface(itf.interfaceNumber, 0);  // alt 0 = internal flash
+    let xfer = 2048;  // wTransferSize of the DFU functional descriptor (F4 ROM: 2048)
+    try {
+      const r = await dev.controlTransferIn({ requestType: 'standard', recipient: 'device', request: 6, value: 0x0200, index: 0 }, 1024);
+      const v = r.data;
+      for (let i = 0; i + 7 <= v.byteLength && v.getUint8(i); i += v.getUint8(i))
+        if (v.getUint8(i + 1) === 0x21) { xfer = v.getUint16(i + 5, true); break; }
+    } catch {}
+    return { dev, intf: itf.interfaceNumber, xfer };
+  }
+  const dfuOut = (d, request, value = 0, data) => {
+    const setup = { requestType: 'class', recipient: 'interface', request, value, index: d.intf };
+    return data === undefined ? d.dev.controlTransferOut(setup) : d.dev.controlTransferOut(setup, data);
+  };
+  async function dfuStatus(d) {
+    const r = await d.dev.controlTransferIn({ requestType: 'class', recipient: 'interface', request: 3, value: 0, index: d.intf }, 6);
+    const v = r.data;
+    return { status: v.getUint8(0), poll: v.getUint8(1) | (v.getUint8(2) << 8) | (v.getUint8(3) << 16), state: v.getUint8(4) };
+  }
+  async function dfuWait(d, what) {  // GETSTATUS until the request is done (dfuDNBUSY -> dfuDNLOAD-IDLE)
+    for (;;) {
+      const s = await dfuStatus(d);
+      if (s.status !== 0) throw new Error(`${what}: DFU status ${s.status}, state ${s.state}`);
+      if (s.state !== 3 && s.state !== 4) return s;
+      await sleep(Math.max(s.poll, 1));
+    }
+  }
+  async function dfuIdle(d) {
+    let s = await dfuStatus(d);
+    if (s.state !== 2) olog('sys', `bootloader in DFU state ${s.state} (status ${s.status}): resetting it to idle`);
+    if (s.state === 10) { await dfuOut(d, 4); s = await dfuStatus(d); }  // dfuERROR: CLRSTATUS
+    if (s.state !== 2) { await dfuOut(d, 6); s = await dfuStatus(d); }   // ABORT
+    if (s.state !== 2) throw new Error(`bootloader not idle (DFU state ${s.state})`);
+  }
+  const dfuCmd = (d, cmd, a, what) => dfuOut(d, 1, 0, new Uint8Array([cmd, a & 255, (a >>> 8) & 255, (a >>> 16) & 255, a >>> 24]))
+    .then(() => dfuWait(d, what));
+  // DfuSe upload (AN3156): set the address pointer, back to dfuIDLE, then block 2 = n bytes at the pointer.
+  async function dfuRead(d, addr, n) {
+    await dfuCmd(d, 0x21, addr, `set address ${hex(addr)}`);
+    await dfuOut(d, 6);  // ABORT -> dfuIDLE
+    const r = await d.dev.controlTransferIn({ requestType: 'class', recipient: 'interface', request: 2, value: 2, index: d.intf }, n);
+    await dfuOut(d, 6);
+    if (r.status !== 'ok' || r.data.byteLength < n) throw new Error(`read ${hex(addr)}: ${r.status}, ${r.data.byteLength} bytes`);
+    return r.data;
+  }
+  async function dfuWrite(d, addr, u8, progress) {
+    for (const s of sectorsFor(addr, u8.length)) {
+      otaUi('wait', 'Erasing…');
+      await dfuCmd(d, 0x41, s, `erase ${hex(s)}`);
+    }
+    otaUi('wait', 'Writing…');
+    for (let off = 0; off < u8.length; off += d.xfer) {
+      // Set the address for every block and send it as block 2 (address = pointer), as dfu-util does.
+      await dfuCmd(d, 0x21, addr + off, `set address ${hex(addr + off)}`);
+      await dfuOut(d, 1, 2, u8.subarray(off, Math.min(off + d.xfer, u8.length)));
+      await dfuWait(d, `write ${hex(addr + off)}`);
+      progress(Math.min(off + d.xfer, u8.length));
+    }
+  }
+  // After the reboot: reopen the serial port granted before and read *IDN?.
+  async function serialIdn(ms) {
+    const end = now() + ms;
+    while (now() < end) {
+      if (S.conn && B.idn) return B.idn;
+      if (!P.port && HAS_SERIAL) {
+        try { await serialOpenOnce(grantedPort); } catch {}
+      }
+      await sleep(500);
+    }
+    return null;
+  }
+  async function flashDfu(u8, info, upd) {
+    if (!HAS_USB) throw new Error('this browser has no WebUSB: use Chrome or Edge');
+    otaUi('wait', 'To the bootloader…');
+    const dev = await dfuDevice();
+    const total = u8.length + (upd ? upd.length : 0);
+    let base = 0;
+    try {
+      const d = await dfuOpen(dev);
+      olog('sys', `ST ROM bootloader open (${dev.productName || '0483:df11'}, ${d.xfer}-byte blocks)`);
+      await dfuIdle(d);
+      if (!upd) {
+        // Only the app: the board must already have the 64 KB updater, i.e. an app header at APP_BASE + 0x200.
+        // Otherwise (old layout, stock firmware, erased app) erasing sector 4 would cut into the old updater.
+        const magic = (await dfuRead(d, APP_BASE + HDR, 4)).getUint32(0, true);
+        if (magic !== MAGIC) {
+          $('oWithUpd').checked = true;
+          throw new Error(`no app header at ${hex(APP_BASE + HDR)}: the board has the old flash layout, the stock firmware or no app, ` +
+            'so it needs the network updater too. Nothing was written. ' + (OTA.tab === 'url'
+              ? '"Also write the network updater" is ticked now: click Stream & flash again.'
+              : 'Use Stream & flash with "Also write the network updater" (it takes updater.bin from next to firmware.bin).'));
+        }
+      }
+      if (upd) {
+        await dfuWrite(d, UPDATER_BASE, upd, (n) => otaProgress(n, total));
+        base = upd.length;
+        olog('okl', `network updater written (${kb(upd.length)} KB at ${hex(UPDATER_BASE)})`);
+      }
+      await dfuWrite(d, APP_BASE, u8, (n) => otaProgress(base + n, total));
+      olog('okl', `app written (${kb(u8.length)} KB at ${hex(APP_BASE)}); leaving the bootloader`);
+      await dfuLeave(d);  // to the updater, which checks the app (CRC) and starts it
+    } finally {
+      try { await dev.close(); } catch {}
+    }
+    otaUi('wait', 'Starting…');
+    const idn = await serialIdn(15000);
+    if (!idn) { olog('sys', 'written. Connect Web Serial to see which build runs.'); return; }
+    const runs = [idn.version, idn.build, idn.time].join(' ');
+    if (idn.version.startsWith('updater')) throw new Error('the board stayed in the network updater: the app did not pass its check');
+    if (runs !== info.version)
+      throw new Error(`the board runs ${runs}, expected ${info.version}. A board without the network updater does not start the new app: tick "Also write the network updater" and flash again.`);
+    olog('okl', `app running: ${runs}`);
+  }
+  // Leave DFU: the ROM starts the image at 0x08000000 (the network updater, or a full image).
+  async function dfuLeave(d) {
+    await dfuCmd(d, 0x21, UPDATER_BASE, 'set address');
+    await dfuOut(d, 1, 0, new Uint8Array(0));
+    try { await dfuStatus(d); } catch {}  // the device detaches here
+  }
+  // A full image (parseFull): erase the sectors it covers, write it at 0x08000000, read it back, start it.
+  // Nothing on the board checks it at boot (no app header), hence the read-back.
+  async function flashDfuFull(u8) {
+    if (!HAS_USB) throw new Error('this browser has no WebUSB: use Chrome or Edge');
+    otaUi('wait', 'To the bootloader…');
+    const dev = await dfuDevice();
+    const total = 2 * u8.length;  // write + read back
+    try {
+      const d = await dfuOpen(dev);
+      olog('sys', `ST ROM bootloader open (${dev.productName || '0483:df11'}, ${d.xfer}-byte blocks)`);
+      await dfuIdle(d);
+      await dfuWrite(d, UPDATER_BASE, u8, (n) => otaProgress(n, total));
+      olog('okl', `written (${kb(u8.length)} KB at ${hex(UPDATER_BASE)}); reading it back`);
+      otaUi('wait', 'Verifying…');
+      for (let off = 0; off < u8.length; off += d.xfer) {
+        const n = Math.min(d.xfer, u8.length - off), v = await dfuRead(d, UPDATER_BASE + off, n);
+        const got = new Uint8Array(v.buffer, v.byteOffset, n), want = u8.subarray(off, off + n);
+        const i = got.findIndex((b, k) => b !== want[k]);
+        if (i >= 0) throw new Error(`verify failed at ${hex(UPDATER_BASE + off + i)}: the flash does not match the file. Flash again.`);
+        otaProgress(u8.length + off + n, total);
+      }
+      olog('okl', 'verified; leaving the bootloader');
+      await dfuLeave(d);
+    } finally {
+      try { await dev.close(); } catch {}
+    }
+    otaUi('wait', 'Starting…');
+    const idn = await serialIdn(15000);
+    if (!idn) { olog('sys', 'written and verified. Connect Web Serial to see what runs (the stock firmware is 03E9:0041).'); return; }
+    olog('okl', `running: ${[idn.model, idn.version, idn.build, idn.time].filter(Boolean).join(' ')}`);
+  }
+
+  // ---------------- sources ----------------
+  document.querySelectorAll('[data-tab]').forEach(btn => btn.onclick = () => {
+    OTA.tab = btn.dataset.tab;
+    document.querySelectorAll('[data-tab]').forEach(x => x.classList.toggle('sel', x === btn));
+    document.querySelectorAll('[data-pane]').forEach(p => p.classList.toggle('hidden', p.dataset.pane !== OTA.tab));
+    render();
+  });
+  $('oUrl').value = store.get('otaUrl', DEFAULT_URL);
+  $('oUrl').addEventListener('change', () => { store.set('otaUrl', $('oUrl').value.trim()); renderPublished(); });
+  $('oUrlGo').onclick = () => {
+    const url = $('oUrl').value.trim();
+    if (!url) return;
+    store.set('otaUrl', url);
+    const withUpd = OTA.transport === 'dfu' && $('oWithUpd').checked;
+    runOta(async () => {
+      const u8 = await fetchBinary(url, 'image');
+      // A full image replaces the updater as well: no updater.bin then.
+      const updater = withUpd && !parseFull(u8) ? await fetchBinary(new URL('updater.bin', url).href, 'updater.bin') : null;
+      return { u8, updater };
+    });
+  };
+  $('oCloneRead').onclick = async () => {
+    if (OTA.busy) return;
+    try {
+      const st = await boardStatus();
+      const u8 = await fetchBinary('/api/firmware.bin', 'the running image');
+      const info = parseImage(u8);
+      OTA.clone = { u8, info, uid: st.uid };
+      olog('okl', `holding ${info.version} (${kb(u8.length)} KB) from board ${st.uid}: now swap the boards`);
+    } catch (e) { olog('err', 'read: ' + e.message); toast('Clone: ' + e.message); }
+    render();
+  };
+  $('oCloneWrite').onclick = () => { const c = OTA.clone; if (c) runOta(async () => ({ u8: c.u8 })); };
+  const flashFile = (file) => { if (file) runOta(async () => { olog('sys', `file ${file.name}`); return { u8: new Uint8Array(await file.arrayBuffer()) }; }); };
+  $('oFile').onchange = () => { flashFile($('oFile').files[0]); $('oFile').value = ''; };
+  const drop = $('oDrop');
+  ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', (e) => flashFile(e.dataTransfer.files[0]));
+  $('oClear').onclick = () => $('oLog').textContent = '';
+
+  // published build (firmware.json next to firmware.bin)
+  let published = null, publishedChecked = false;
+  async function loadPublished() {
+    try { const r = await fetch(PUBLISHED_BASE + 'firmware.json', { cache: 'no-store' }); if (r.ok) published = await r.json(); } catch {}
+    publishedChecked = true;
+    renderPublished();
+  }
+  function renderPublished() {
+    const el = $('oLatest');
+    let html;
+    if (!published) html = publishedChecked ? 'Published build: not available (not published yet, or offline).' : 'Published build: checking…';
+    else {
+      const cur = boardVersion();
+      html = `Published build: <span class="mono">${published.version}</span>` +
+        (published.commit ? ` · <span class="mono">${published.commit.slice(0, 7)}</span>` : '') +
+        ` · ${kb(published.size)} KB` + (cur ? (cur === published.version ? ' · <b>the board runs it</b>' : '') : '') +
+        ($('oUrl').value.trim() === PUBLISHED_BIN ? '' : ' · <button id="oUsePublished" class="small">Use it</button>');
+    }
+    if (el.dataset.html === html) return;
+    el.innerHTML = el.dataset.html = html;
+    const b = $('oUsePublished');
+    if (b) b.onclick = () => { $('oUrl').value = PUBLISHED_BIN; store.set('otaUrl', PUBLISHED_BIN); renderPublished(); };
+  }
+  // the app image version the board runs: "<fw version> <branch>/<hash> <build time>" (= *IDN? fields 4-6)
+  function boardVersion() {
+    const st = USE_WS ? B.status : null;
+    if (st && st.mode === 'app' && st.image) return st.image.version;
+    if (B.idn && !B.idn.version.startsWith('updater')) return [B.idn.version, B.idn.build, B.idn.time].join(' ');
+    return '';
+  }
+
+  // updater banner: start the installed app
+  $('updStart').onclick = async () => {
+    if (USE_WS) {
+      try { const r = await fetchT('/api/reboot', 3000, { method: 'POST' }); dlog('sys', 'POST /api/reboot: ' + r.status); } catch (e) { dlog('err', e.message); }
+    } else if (S.conn) { try { await scpi(':SYSTem:RESet'); } catch {} }
+  };
+
+  function renderOta() {
+    const st = USE_WS ? B.status : null;
+    const updMode = (st && st.mode === 'updater') || !!(B.idn && B.idn.version.startsWith('updater'));
+    $('updBanner').classList.toggle('hidden', !updMode);
+    if (updMode) {
+      set('updReason', st ? st.reason : (B.updReason || 'see :SYSTem:MODE?'));
+      const app = st && st.image && st.image.valid ? st.image.version : '';
+      $('updAppWrap').classList.toggle('hidden', !!st && !app);
+      set('updApp', app ? '(' + app + ')' : '');
+      $('updStart').disabled = (!!st && !app) || (!st && !S.conn);
+    }
+    set('oCur', updMode ? 'network updater' + (st && st.image && st.image.valid ? ' · app ' + st.image.version : st ? ' · no valid app' : '')
+      : boardVersion() || '—');
+
+    const ready = OTA.transport === 'http' ? !!st : HAS_USB;
+    set('oUrlGo', OTA.pick ? 'Waiting for the ST bootloader…' : 'Stream & flash');
+    ['oUrlGo', 'oCloneRead'].forEach(id => $(id).disabled = OTA.busy || !ready);
+    $('oFile').disabled = OTA.busy || !ready;
+    $('oWithUpdWrap').classList.toggle('hidden', OTA.transport !== 'dfu');
+    $('oFullHint').classList.toggle('hidden', OTA.transport !== 'dfu');
+    const c = OTA.clone;
+    set('oCloneHeld', c ? `holding ${c.info.version} · ${kb(c.u8.length)} KB · from ${c.uid}` : '');
+    const target = st && st.uid;
+    $('oCloneWrite').disabled = OTA.busy || !c || !target || target === c.uid;
+    set('oCloneTarget', !c ? '' : !target ? 'no board connected' : target === c.uid ? `still the source board (${target}): swap boards` : `target board ${target}`);
+    if (!OTA.busy && $('oBadge').textContent === 'Idle') $('oBadge').className = 'badge off';
+    renderPublished();
+  }
+
+  // =====================================================================
+  // Rendering
+  // =====================================================================
+  function beat() { const hb = $('dHb'); hb.classList.remove('beat'); void hb.offsetWidth; hb.classList.add('beat'); }
+  const set = (id, v) => { const e = $(id); if (e.textContent !== v) e.textContent = v; };
+
+  function render() {
+    const live = !!S.conn, st = USE_WS ? B.status : null;
+    document.querySelectorAll('[data-led],[data-rgb],[data-c],#cCmd,#cSend,#cReset,#cDfu').forEach(e => e.disabled = !live);
+    $('dIdentify').disabled = !live || !B.ext;
+    $('cConnect').disabled = live;
+    $('hdrConnect').classList.toggle('hidden', USE_WS || live);
+    $('cDisconnect').disabled = !live;
+
+    const badge = $('dBadge'), cb = $('cBadge');
+    if (live) { badge.className = cb.className = 'badge on'; badge.textContent = cb.textContent = S.conn.label + ' live'; }
+    else if (USE_WS && st && st.mode === 'updater') { badge.className = cb.className = 'badge wait'; badge.textContent = cb.textContent = 'Updater mode'; }
+    else if (USE_WS && W.state === 'connecting') { badge.className = cb.className = 'badge wait'; badge.textContent = cb.textContent = 'Connecting…'; }
+    else if (USE_WS) { badge.className = cb.className = 'badge err'; badge.textContent = cb.textContent = st && st.ws ? 'WebSocket busy' : st ? 'Reconnecting…' : 'Offline'; }
+    else { badge.className = cb.className = 'badge off'; badge.textContent = 'No board'; cb.textContent = 'Disconnected'; }
+    if (USE_WS) {
+      // A second WebSocket client gets 503 (one SCPI channel per transport), e.g. another page.
+      const busy = !live && !!st && st.ws === true;
+      $('cNote').classList.toggle('hidden', !busy);
+      if (busy) $('cNote').innerHTML = 'The board takes <b>one</b> WebSocket client at a time and another one is connected (another tab or page). Close it; this page retries.';
+    }
+
+    renderOta();
+
+    const hv = $('hdrVersion');
+    hv.classList.toggle('hidden', !(live && B.idn));
+    if (B.idn) set('hdrVersion', `${B.idn.model} · ${B.idn.version} · ${B.idn.build}`);
+
+    set('dCounter', live && B.ticks != null ? String(B.ticks) : '—');
+    const led = $('dLed'), l = B.led;
+    if (!live || !l) { led.className = 'led unknown'; led.style.cssText = ''; set('dLedLbl', 'RGB LED'); }
+    else if (!l.custom) { led.className = 'led status'; led.style.cssText = ''; set('dLedLbl', 'Status'); }
+    else {
+      led.className = 'led';
+      const c = `rgb(${l.r ? 255 : 32},${l.g ? 255 : 38},${l.b ? 255 : 47})`;
+      led.style.cssText = lit(l) ? `background:${c};border-color:${c};box-shadow:0 0 18px 4px ${c.replace('rgb', 'rgba').replace(')', ',.45)')}` : '';
+      set('dLedLbl', lit(l) ? ['R', 'G', 'B'].filter((_, i) => [l.r, l.g, l.b][i]).join('+') : 'Off');
+    }
+    document.querySelectorAll('[data-rgb]').forEach(b => b.classList.toggle('sel', !!(l && l.custom && b.dataset.rgb === `${l.r},${l.g},${l.b}`)));
+    $('colors').querySelector('[data-led="status"]').classList.toggle('sel', !!(live && l && !l.custom));
+
+    set('dIntVal', fmtMs(pollMs));
+    set('dIntHz', '(' + +(1000 / pollMs).toFixed(2) + ' Hz)');
+    if (document.activeElement !== $('dInt')) $('dInt').value = intToSlider(pollMs);
+    document.querySelectorAll('[data-ms]').forEach(e => e.classList.toggle('sel', +e.dataset.ms === pollMs));
+    const t = B.times;
+    if (live && t.length >= 3) {
+      const d = []; for (let i = 1; i < t.length; i++) d.push(t[i] - t[i - 1]);
+      const mean = d.reduce((a, c) => a + c, 0) / d.length;
+      const sd = Math.sqrt(d.reduce((a, c) => a + (c - mean) ** 2, 0) / d.length);
+      set('dRate', (1000 / mean).toFixed(2) + ' Hz');
+      set('dJitter', sd.toFixed(1) + ' ms');
+    } else { set('dRate', live ? '…' : '—'); set('dJitter', live ? '…' : '—'); }
+    set('dRtt', live && B.rtt != null ? B.rtt.toFixed(1) + ' ms' : '—');
+
+    set('dIp', st ? st.ip : USE_WS ? location.hostname : '—');
+    set('dHost', st ? st.host : '—');
+    set('dUid', B.idn ? B.idn.serial : st ? st.uid : '—');
+    set('dMac', st ? st.mac : '—');
+    set('dUp', live && B.ticks != null ? fmtUp(B.ticks) : st ? fmtUp(st.uptime_s * 1000) : '—');
+    set('dAcm', st ? st.console : USE_SERIAL && live ? 'this page' : '—');
+    set('dFrames', st ? `${st.rx_frames} / ${st.tx_frames}` : '—');
+    set('dDrops', st ? `${st.rx_drops} / ${st.tx_drops}` : '—');
+  }
+
+  // =====================================================================
+  // Board page over USB Ethernet (docs/iphone-offline-ui.md §3.2, §3.3)
+  //   https copy: open http://phone-poc.local/ in a new tab and hand it this console (postMessage;
+  //               no http:// or ws:// request from here)
+  //   board copy: shown by the board loader (web/loader.html) from this origin's IndexedDB;
+  //               checks GitHub Pages for a newer console and stores it for the next start
+  // =====================================================================
+  const UI_VERSION = (document.querySelector('meta[name="mio-ui-version"]') || {}).content || 'dev';
+  const BOOT = window.__MIO_BOOT__ || null;  // {source: handoff|stored|pages, version}, set by the loader
+  const BOARD_URL = 'http://phone-poc.local/';
+  const BOARD_ORIGIN = /^http:\/\/(phone-poc(-[0-9a-f]{4})?\.local|192\.168\.7\d?\.1)$/;
+  const IS_IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const IS_MOBILE = IS_IOS || /Android/.test(navigator.userAgent);
+  const STANDALONE = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+
+  let ownHtml = null;  // this page's own source, as served (not the live DOM)
+  const ownSource = () => ownHtml || (ownHtml = fetch(location.href.split('#')[0])
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+    .catch(e => { ownHtml = null; throw e; }));
+  function showBoardBanner() {
+    $('boardWhy').textContent = IS_IOS ? 'iPhone and iPad browsers have no USB serial.' : 'This browser has no Web Serial (Chrome or Edge have it).';
+    $('boardBanner').classList.remove('hidden');
+    $('boardBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function openBoard() {
+    ownSource().catch(() => {});
+    const w = window.open(BOARD_URL, 'phone-poc');  // in the tap handler, so it isn't blocked
+    if (!w) { location.href = BOARD_URL; return; }  // blocked anyway: plain navigation (stored copy)
+    dlog('sys', 'opened the board page, handing over the console');
+  }
+  if (!USE_WS) {
+    addEventListener('message', async (e) => {
+      if (!BOARD_ORIGIN.test(e.origin) || !e.data || e.data.type !== 'mio-ready' || !e.source) return;
+      try {
+        const html = await ownSource();
+        e.source.postMessage({ type: 'mio-ui', version: UI_VERSION, html }, e.origin);
+        dlog('sys', `console ${UI_VERSION} handed to ${e.origin}` + (e.data.have ? ` (it had ${e.data.have})` : ''));
+      } catch (err) { dlog('err', 'console handover failed: ' + err.message); }
+    });
+    // Links to the board page (in the notes) take the same path.
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest && e.target.closest('a[href^="http://phone-poc.local"]');
+      if (a) { e.preventDefault(); openBoard(); }
+    });
+  }
+  $('boardOpen').onclick = $('cBoard').onclick = openBoard;
+  $('boardClose').onclick = () => $('boardBanner').classList.add('hidden');
+
+  // Board copy: newer console on GitHub Pages (CORS *) -> store it, offer a reload.
+  function idbPut(rec) {
+    return new Promise((r) => {
+      try {
+        const q = indexedDB.open('mio', 1);
+        q.onupgradeneeded = () => q.result.createObjectStore('ui');
+        q.onerror = q.onblocked = () => r(false);
+        q.onsuccess = () => {
+          const t = q.result.transaction('ui', 'readwrite');
+          t.objectStore('ui').put(rec, 'active');
+          t.oncomplete = () => r(true);
+          t.onerror = t.onabort = () => r(false);
+        };
+      } catch { r(false); }
+    });
+  }
+  async function uiUpdateCheck() {
+    const ac = new AbortController(), t = setTimeout(() => ac.abort(), 8000);
+    try {
+      const j = await (await fetch(PUBLISHED_BASE + 'ui.json?t=' + Date.now(), { signal: ac.signal })).json();
+      if (!j.version || j.version === UI_VERSION) return;
+      const r = await fetch(PUBLISHED_BASE + 'index.html?v=' + encodeURIComponent(j.version), { signal: ac.signal });
+      if (!r.ok) return;
+      const html = await r.text();
+      if (await idbPut({ version: j.version, html, cachedAt: Date.now() })) {
+        set('uiNew', j.version);
+        $('uiUpdate').classList.remove('hidden');
+        dlog('sys', `console ${j.version} stored, used from the next start`);
+      }
+    } catch { /* offline: keep the stored one */ } finally { clearTimeout(t); }
+  }
+  $('uiReload').onclick = () => location.reload();
+  {
+    const pill = $('uiPill');
+    pill.textContent = 'UI ' + UI_VERSION + (BOOT && STANDALONE ? ' · offline ready' : '');
+    pill.title = !USE_WS ? 'console version (GitHub Pages / local copy)'
+      : !BOOT ? 'console served directly by the board'
+      : `${STANDALONE ? 'Home Screen app' : 'browser tab'}; console ${{ handoff: 'handed over by the https console', stored: 'stored on this device', pages: 'loaded from GitHub Pages' }[BOOT.source] || BOOT.source}`;
+    pill.classList.remove('hidden');
+  }
+
+  // ---------------- init ----------------
+  set('oTag', OTA.transport === 'http' ? 'USB Ethernet · network updater' : 'WebUSB · ST ROM DFU');
+  if (OTA.transport === 'dfu') {
+    document.querySelector('[data-tab="clone"]').classList.add('hidden');  // needs the board's HTTP server
+    if (HAS_USB) {
+      $('oNote').innerHTML = 'Writes the app (and optionally the updater) through the ST ROM bootloader.';
+      $('oNote').classList.remove('hidden');
+    } else {
+      $('oNoUsb').classList.remove('hidden');  // right above the greyed buttons
+    }
+  }
+  loadPublished();
+  set('dTag', USE_WS ? 'SCPI · /ws' : 'SCPI · ' + SERIAL_LABEL);
+  set('cTag', USE_WS ? 'WebSocket /ws' : 'CDC-ACM · ' + (USB_SERIAL ? 'WebUSB' : 'Web Serial'));
+  if (USE_WS) {
+    $('serialRow').classList.add('hidden');
+    pollStatus().then(wsConnect);  // the network updater has no /ws: know the mode first
+    if (BOOT && BOOT.source !== 'pages') uiUpdateCheck();
+  } else if (USB_SERIAL) {
+    $('cConnect').textContent = 'Connect USB serial';
+    navigator.usb.addEventListener('disconnect', (e) => { if (P.port && e.device === P.port.device_) serialClose('unplugged'); });
+    navigator.usb.addEventListener('connect', (e) => usbReplug(e.device));
+    loadPolyfill().catch(e => dlog('err', e.message));
+  } else if (!('serial' in navigator)) {
+    $('cConnect').textContent = 'Connect';
+  } else {
+    navigator.serial.addEventListener('connect', () => { if (!P.port) clog('sys', 'serial device attached. Click Connect'); });
+    if (!IS_MOBILE) $('cBoard').classList.remove('hidden');
+  }
+
+  // ---------------- setup help (per OS) ----------------
+  const UA = navigator.userAgent;
+  const MY_OS = IS_IOS ? 'ios' : /Android/.test(UA) ? 'android' : /Windows/.test(UA) ? 'win' : /Mac OS X/.test(UA) ? 'mac' : /Linux|X11/.test(UA) ? 'linux' : 'win';
+  function helpTab(os) {
+    document.querySelectorAll('#helpTabs [data-os]').forEach(b => b.classList.toggle('sel', b.dataset.os === os));
+    document.querySelectorAll('#help [data-ospane]').forEach(p => p.classList.toggle('hidden', p.dataset.ospane !== os));
+  }
+  function showHelp(sec) {
+    const dlg = $('help');
+    helpTab(MY_OS);
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    const h = sec && dlg.querySelector(`[data-ospane="${MY_OS}"] [data-sec="${sec}"]`);
+    if (h) h.scrollIntoView({ block: 'start' });
+  }
+  $('helpTabs').onclick = (e) => { const b = e.target.closest('[data-os]'); if (b) helpTab(b.dataset.os); };
+  $('hdrHelp').onclick = () => showHelp();
+  document.querySelectorAll('[data-help]').forEach(b => b.onclick = () => showHelp(b.dataset.help));
+  $('helpClose').onclick = () => $('help').close ? $('help').close() : $('help').removeAttribute('open');
+  $('help').addEventListener('click', (e) => { if (e.target === $('help')) $('help').close(); });  // backdrop
+
+  // ---------------- Install app ----------------
+  // Chromium (Chrome, Edge, Brave) on the HTTPS console: the browser's own install dialog
+  // (beforeinstallprompt; needs the manifest and the service worker). Safari and Firefox have no
+  // install API: there the button shows the steps. Hidden where installing doesn't help: inside the
+  // installed app, the HTTPS console on iOS/Safari/Firefox (no USB serial there), the board page
+  // in Chromium (Chrome doesn't install plain-http pages; the HTTPS console does everything there).
+  if (location.protocol === 'https:' || location.hostname === 'localhost') {
+    const l = document.createElement('link');
+    l.rel = 'manifest'; l.href = 'manifest.webmanifest';
+    document.head.appendChild(l);
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(e => dlog('err', 'service worker: ' + e.message));
+  }
+  const IS_FIREFOX = /Firefox|FxiOS/.test(UA);
+  const IS_MAC_SAFARI = !IS_IOS && /Macintosh/.test(UA) && /Safari\//.test(UA) && !/Chrome|Chromium|Edg\/|Firefox/.test(UA);
+  const INSTALL_STEPS = STANDALONE ? ''
+    : IS_IOS ? (USE_WS
+      ? 'tap Share, then <b>Add to Home Screen</b>. Open the new icon once while online; after that it works without internet. Plug in the board before opening it.'
+      : 'on iPhone and iPad the app is the board page. Tap <b>Open board page</b>, then on that page tap Share, then <b>Add to Home Screen</b>.')
+    : !USE_WS ? ''
+    : IS_MAC_SAFARI ? 'in the menu bar choose File, then <b>Add to Dock</b>.'
+    : IS_FIREFOX && /Android/.test(UA) ? 'open the Firefox menu (⋮), then <b>Add to Home screen</b>.'
+    : '';
+  let installEvt = null;
+  $('hdrInstall').classList.toggle('hidden', !INSTALL_STEPS);
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; $('hdrInstall').classList.remove('hidden'); });
+  window.addEventListener('appinstalled', () => { installEvt = null; $('hdrInstall').classList.add('hidden'); });
+  $('hdrInstall').onclick = async () => {
+    if (installEvt) {
+      const e = installEvt; installEvt = null;
+      e.prompt();
+      await e.userChoice.catch(() => {});
+      $('hdrInstall').classList.add('hidden');  // Chrome fires beforeinstallprompt again if it can still install
+      return;
+    }
+    $('installSteps').innerHTML = INSTALL_STEPS;
+    $('install').classList.remove('hidden');
+    $('install').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  $('installClose').onclick = () => $('install').classList.add('hidden');
+
+  render();
+})();
+</script>
+</body>
+</html>
